@@ -1,3 +1,4 @@
+mod tcpconn;
 extern crate libc;
 
 use std::ffi::CStr;
@@ -5,6 +6,9 @@ use std::ffi::CString;
 use libc::c_char;
 use libc::size_t;
 use libc::strncpy;
+use std::io::prelude::*;
+use std::net::TcpStream;
+use tcpconn::TCP_LOCATION;
 
 fn write_string(output: *mut c_char, src: &str, output_size: size_t) {
     let c_str = CString::new(src);
@@ -28,7 +32,13 @@ pub extern "C" fn RVExtension(output: *mut c_char, output_size: size_t, function
         if f_str == "version" {
             o_str = String::from(env!("CARGO_PKG_VERSION"));
         } else {
-            o_str = String::from("done");
+            let stream_resp = TcpStream::connect(TCP_LOCATION);
+            if stream_resp.is_err() {
+                o_str = String::from("tcp_stream");
+            } else {
+                let _ = stream_resp.unwrap().write(f_str.as_bytes());
+                o_str = String::from("done");
+            }
         }
     }
 

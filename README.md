@@ -1,10 +1,17 @@
 arma-rust-plugin
 ===
-provides a proof-of-concept arma plugin implemented in rust
+provides a proof-of-concept arma plugin implemented in rust to send data over tcp
 
 # building
 
 assuming usage of rustup is known and that we're doing this from Arch Linux, make sure to add `--release` for release builds
+
+## tcp
+
+to change the tcp connection locatoin
+```
+make TCP="192.168.1.100:5555"_
+```
 
 ## linux
 
