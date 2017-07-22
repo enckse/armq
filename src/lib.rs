@@ -16,7 +16,7 @@ fn write_string(output: *mut c_char, src: &str) {
 #[no_mangle]
 #[cfg_attr(all(target_os = "windows", target_arch = "x86"), export_name = "_RVExtension@12")]
 pub extern "C" fn RVExtension(output: *mut c_char, output_size: c_int, function: *const c_char) {
-    let f_str = unsafe { CStr::from_ptr(function).to_str().unwrap() };
+    let f_str = unsafe { CStr::from_ptr(function).to_str() };
     let o_str: String;
     if f_str == "version" {
         o_str = String::from("0.0.1");
