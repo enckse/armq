@@ -26,7 +26,7 @@ pub extern "C" fn RVExtension(output: *mut c_char, output_size: size_t, function
     } else {
         let f_str = function_result.unwrap();
         if f_str == "version" {
-            o_str = String::from("0.0.1");
+            o_str = String::from(env!("CARGO_PKG_VERSION"));
         } else {
             o_str = String::from("done");
         }
