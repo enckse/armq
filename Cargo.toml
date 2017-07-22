@@ -1,0 +1,11 @@
+[package]
+name = "armq"
+version = "0.1.0"
+authors = ["Sean Enck <enckse@gmail.com>"]
+
+[lib]
+crate-type = ["dylib"] 
+
+[dependencies]
+libc = "0.2.26" 
+
