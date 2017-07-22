@@ -10,7 +10,7 @@ assuming usage of rustup is known and that we're doing this from Arch Linux, mak
 
 to change the tcp connection locatoin
 ```
-make TCP="192.168.1.100:5555"_
+make TCP="192.168.1.100:5555"
 ```
 
 ## linux
