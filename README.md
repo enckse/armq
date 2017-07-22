@@ -6,7 +6,7 @@ provides a proof-of-concept arma plugin implemented in rust to send data over tc
 
 assuming usage of rustup is known and that we're doing this from Arch Linux, make sure to add `--release` for release builds
 
-[![Build Status](https://travis-ci.org/enckse/arma-rust-plugin.svg?branch=master)](https://travis-ci.org/enckse/arma-rust-plugin)
+[![Build Status](https://travis-ci.org/enckse/armq.svg?branch=master)](https://travis-ci.org/enckse/armq)
 
 
 ## tcp
