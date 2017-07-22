@@ -1,4 +1,4 @@
-arma-rust-plugin
+armq
 ===
 provides a proof-of-concept arma plugin implemented in rust to send data over tcp
 
