@@ -9,4 +9,5 @@ all: clean
 	cargo build --target=$(ARCH) --release
 
 clean:
-	rm -rf $(BIN)
+	rm -rf $(BIN)/release
+	rm -rf $(BIN)/debug
