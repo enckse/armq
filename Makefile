@@ -1,13 +1,17 @@
-ARCH=x86_64-unknown-linux-gnu
-TCP="127.0.0.1:7777"
-TCP_RS=src/tcpconn.rs
-BIN=target
+BIN=bin
 .PHONY: all
 
+build-lib = $1 CC=$2 GOOS=$3 go build -o $(BIN)/armq.a -buildmode=c-archive src/armq.go
+
 all: clean
-	$(shell echo "pub const TCP_LOCATION: &'static str = \"$(TCP)\";" > $(TCP_RS))
-	cargo build --target=$(ARCH) --release
+
+linux: 
+#	g++ -shared -pthread -o bin/arma.so src/armq.c bin/armq.a
+
+windows: 
+	$(call build-lib,CGO_ENABLED=1,x86_64-w64-mingw32-gcc,windows)
+	x86_64-w64-mingw32-g++ -shared -pthread -o bin/armq.dll src/armq.c bin/armq.a
 
 clean:
-	rm -rf $(BIN)/release
-	rm -rf $(BIN)/debug
+	rm -rf $(BIN)
+	mkdir -p $(BIN)
