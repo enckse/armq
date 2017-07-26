@@ -30,3 +30,17 @@ and just linux 64
 ```
 make linux64
 ```
+
+# plugins
+
+## broadcast
+
+send data broadcasts out
+
+## sendrcv
+
+send and receive data/commands
+
+## debug
+
+print to debugging trace
