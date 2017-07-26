@@ -1,4 +1,3 @@
-language: rust
-rust:
-  - stable
-script: make
+language: d
+
+script: make linux64
