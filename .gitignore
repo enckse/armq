@@ -24,6 +24,5 @@ docs/
 *.lst
 
 bin/
-orchestrate/out/*
-orchestrate/configs/*
-extramods/*
+Makefile
+defs/

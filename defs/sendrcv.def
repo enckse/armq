@@ -1,2 +1,0 @@
-LIBRARY "sendrcv.dll"
-EXPORTS RVExtension
