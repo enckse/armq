@@ -25,7 +25,7 @@ fi
 echo "using port $PORT"
 HOST=$ARMQ_HOST
 if [ -z "$HOST" ]; then
-    HOST="127.0.0.1"
+    HOST="localhost"
 fi
 echo "using host $HOST"
 echo "module vars;
@@ -37,9 +37,11 @@ _mk() {
     echo -e '\t'"mkdir -p $2"
 }
 
+echo "checking for dmd.exe"
 if [ -z "$DMD" ]; then
     echo "no DMD detected..."
 else
+    echo "ok"
     _win32() {
         _mk "win32" $WIN32
         for d in $ALL; do
@@ -49,7 +51,9 @@ else
     _win32 >> $MAKEFILE
 fi
 
+echo "checking for dmd"
 if [ -x "$(command -v dmd)" ]; then
+    echo "ok"
     _linux64() {
         _mk "linux64" $LIN64
         for d in $ALL; do
@@ -61,7 +65,9 @@ else
     echo "no dmd for linux..."
 fi
 
+echo "checking for dmd64"
 if [ -x "$(command -v dmd64)" ]; then
+    echo "ok"
     _win64(){
         _mk "win64" $WIN64
         for d in $ALL; do
