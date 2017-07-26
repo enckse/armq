@@ -6,6 +6,7 @@
 import plugin_definition;
 import core.sys.windows.dll;
 import core.sys.windows.windows;
+import std.conv: to;
 
 // Print to debugview output
 version(Windows)
@@ -56,7 +57,7 @@ export extern(Windows) void RVExtension(char* output,
                         int output_size,
                         const char* cinput)
 {
-    if (cinput == "version")
+    if (to!string(cinput) == "version")
     {
         output[0] = '1';
         output[1] = '.';
