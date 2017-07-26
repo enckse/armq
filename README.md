@@ -10,6 +10,11 @@ supported targets:
 * windows 64-bit (requires a helper `dmd64` to use MSFT `link.exe` and friends)
 * linux 64-bit
 
+first
+```
+./configure
+```
+
 to hit all support targets
 ```
 make
