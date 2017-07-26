@@ -1,3 +1,5 @@
 language: d
 
-script: make linux64
+script:
+    - ./configure
+    - make linux64
