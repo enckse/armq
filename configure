@@ -10,6 +10,7 @@ WIN32=$BIN/win32/
 WIN64=$BIN/win64/
 LIN64=$BIN/lin64/
 DEFS=defs/
+mkdir -p $DEFS
 CMDS="clean"
 MAKEFILE=Makefile
 echo "# Generated "$(date +%s) > $MAKEFILE
