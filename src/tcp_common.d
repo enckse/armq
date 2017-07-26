@@ -7,10 +7,6 @@ module tcp_common;
 import definitions;
 import std.socket;
 
-/**
- * Generic responses to command(s)
- */
-
 // response indicator
 enum Response = "resp:";
 
@@ -46,9 +42,6 @@ static string sendReceive(const char* send, Types type)
                 break;
             case Types.Broadcast:
                 ctrl = BroadcastData;
-                break;
-            case Types.Admin:
-                ctrl = AdminData;
                 break;
             default:
                 break;
