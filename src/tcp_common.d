@@ -6,6 +6,7 @@
 module tcp_common;
 import definitions;
 import std.socket;
+import vars;
 
 // response indicator
 enum Response = "resp:";
@@ -52,7 +53,7 @@ static string sendReceive(const char* send, Types type)
             throw new Exception("unknown control type");
         }
 
-        socket.connect(new InternetAddress(BindAddress, Port));
+        socket.connect(new InternetAddress(Host, Port));
         auto packet = DataPacket.create(ctrl, send);
         socket.send(packet.str);
         string resp = OkResponse;

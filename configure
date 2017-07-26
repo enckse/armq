@@ -4,18 +4,33 @@ SND="sendrcv"
 DBG="debugger"
 ALL="$BRD $SND $DBG"
 SKIP=$(echo $ALL | sed "s/ /.d|/g")".d"
+DEFS=defs/
+mkdir -p $DEFS
+VARS=${DEFS}vars.d
 SRC=$(find src/ -type f | grep -v -E "$SKIP" | tr '\n' ' ')
+SRC=$SRC" "$VARS
 WINSRC=$(echo $SRC | sed -e "s/\//\\\\\\\\/g")
 BIN=bin
 WIN32=$BIN/win32/
 WIN64=$BIN/win64/
 LIN64=$BIN/lin64/
-DEFS=defs/
-mkdir -p $DEFS
 CMDS="clean"
 MAKEFILE=Makefile
 echo "# Generated "$(date +%s) > $MAKEFILE
 
+PORT=$ARMQ_PORT
+if [ -z "$PORT" ]; then
+    PORT=5555
+fi
+echo "using port $PORT"
+HOST=$ARMQ_HOST
+if [ -z "$HOST" ]; then
+    HOST="127.0.0.1"
+fi
+echo "using host $HOST"
+echo "module vars;
+public enum Port = $PORT;
+public enum Host = \"$HOST\";" > $VARS
 _mk() {
     CMDS=$CMDS" "$1
     echo "$1:"

@@ -12,16 +12,6 @@ import std.string : indexOf, join, lastIndexOf, split;
 enum DefaultBuffer = 32768;
 
 /**
- * Location where the listener/orchestration is sitting
- */
-enum BindAddress = "localhost";
-
-/**
- * Port on the bound address to communicate over
- */
-enum Port = 5555;
-
-/**
  * Types of commands that can be set to the orchestration server
  */
 enum Types
