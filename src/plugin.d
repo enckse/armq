@@ -56,5 +56,15 @@ export extern(Windows) void RVExtension(char* output,
                         int output_size,
                         const char* cinput)
 {
-    pluginOperation(output, output_size, cinput);
+    if (cinput == "version")
+    {
+        output[0] = '1';
+        output[1] = '.';
+        output[2] = '0';
+        output[3] = '\0';
+    }
+    else
+    {
+        pluginOperation(output, output_size, cinput);
+    }
 }
