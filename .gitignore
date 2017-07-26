@@ -1,15 +1,29 @@
-# Binaries for programs and plugins
-*.exe
-*.dll
+# Compiled Object files
+*.o
+*.obj
+
+# Compiled Dynamic libraries
 *.so
 *.dylib
+*.dll
 
-# Test binary, build with `go test -c`
-*.test
+# Compiled Static libraries
+*.a
+*.lib
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.out
+# Executables
+*.exe
 
-# Project-local glide cache, RE: https://github.com/Masterminds/glide/issues/736
-.glide/
+# DUB
+.dub
+docs.json
+__dummy.html
+docs/
+
+# Code coverage
+*.lst
+
 bin/
+orchestrate/out/*
+orchestrate/configs/*
+extramods/*

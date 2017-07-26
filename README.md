@@ -1,65 +1,32 @@
 armq
 ===
-provides a proof-of-concept arma plugin implemented in rust to send data over tcp
 
-# building
+ARMA3 output extensions for message queuing and information passing
 
-assuming usage of rustup is known and that we're doing this from Arch Linux, make sure to add `--release` for release builds
+# build
 
-[![Build Status](https://travis-ci.org/enckse/armq.svg?branch=master)](https://travis-ci.org/enckse/armq)
+supported targets:
+* windows 32-bit (requires `wine` and `DMD` variable pointing to `dmd.exe`)
+* windows 64-bit (requires a helper `dmd64` to use MSFT `link.exe` and friends)
+* linux 64-bit
 
-
-## tcp
-
-to change the tcp connection locatoin
+to hit all support targets
 ```
-make TCP="192.168.1.100:5555"
-```
-
-## linux
-
-
-### 64-bit
-
-```
-make ARCH=x86_64-unknown-linux-gnu
+make
 ```
 
-### 32-bit
-
-**NOTE: this may not be applicable but for full coverage**
-
+for just win32
 ```
-make ARCH=i686-unknown-linux-gnu
+make win32 DMD=/path/to/dmd/windows/bin/dmd.exe
 ```
 
-## windows
-
-from linux (making sure mingw is installed)
-
-### 32-bit (mingw)
+for just win64
 
 ```
-vim ~/.cargo/config
----
-[target.i686-pc-windows-gnu]
-linker = "i686-w64-mingw32-gcc"
-rustflags = "-C panic=abort"
+make win64
 ```
 
+and just linux 64
 ```
-make ARCH=i686-pc-windows-gnu
-```
-
-### 64-bit (mingw)
-
-```
-vim ~/.cargo/config
----
-[target.x86_64-pc-windows-gnu]
-linker = "x86_64-w64-mingw32-gcc"
-```
-
-```
-mark ARCH=x86_64-pc-windows-gnu
+make linux64
 ```
