@@ -61,7 +61,7 @@ export extern(Windows) void RVExtension(char* output,
     {
         output[0] = '1';
         output[1] = '.';
-        output[2] = '0';
+        output[2] = Minor;
         output[3] = '\0';
     }
     else

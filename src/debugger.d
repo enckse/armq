@@ -15,6 +15,8 @@ version(Windows)
     extern (Windows) void OutputDebugStringA(LPCSTR lpString);
 }
 
+public enum Minor = '0';
+
 /**
  * broadcast plugin
  */

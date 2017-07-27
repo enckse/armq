@@ -7,6 +7,8 @@ module plugin_definition;
 import definitions;
 import tcp_common;
 
+public enum Minor = '0';
+
 /**
  * broadcast plugin
  */
