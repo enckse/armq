@@ -7,6 +7,7 @@ module plugin_definition;
 import definitions;
 import tcp_common;
 
+// Minor version number
 public enum Minor = '0';
 
 /**

@@ -12,9 +12,10 @@ import std.string: toStringz;
 // Print to debugview output
 version(Windows)
 {
-    extern (Windows) void OutputDebugStringA(LPCSTR lpString);
+    extern(Windows) void OutputDebugStringA(LPCSTR lpString);
 }
 
+// Minor version number
 public enum Minor = '0';
 
 /**
