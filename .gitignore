@@ -23,6 +23,7 @@ docs/
 # Code coverage
 *.lst
 
+*.tar.gz
 bin/
 Makefile
 defs/
