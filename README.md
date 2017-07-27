@@ -24,7 +24,7 @@ make
 
 for just win32
 ```
-make win32 DMD=/path/to/dmd/windows/bin/dmd.exe
+make win32
 ```
 
 for just win64
