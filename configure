@@ -29,6 +29,10 @@ HOST=$ARMQ_HOST
 if [ -z "$HOST" ]; then
     HOST="localhost"
 fi
+echo "checking for disabled objects..."
+if [ ! -z "$DISABLE" ]; then
+    ALL=$(echo $ALL | sed "$DISABLE")
+fi
 echo "using host $HOST"
 echo "// generated "$(date +%Y-%m-%d-%s)"
 module vars;
@@ -40,6 +44,14 @@ _mk() {
     echo -e '\t'"mkdir -p $2"
 }
 
+_nm() {
+    if [ -z "$RENAMES" ]; then
+        echo $PREFIX$1
+    else
+        echo $1 | sed "$RENAMES"
+    fi
+}
+
 echo "checking for dmd.exe"
 if [ -z "$DMD" ]; then
     echo "no DMD detected..."
@@ -48,7 +60,7 @@ else
     _win32() {
         _mk "win32" $WIN32
         for d in $ALL; do
-            echo -e '\t'"wine $DMD -m32 -of$WIN32$PREFIX$d.dll $SRC src/$d.d"
+            echo -e '\t'"wine $DMD -m32 -of$WIN32$(_nm $d).dll $SRC src/$d.d"
         done
     }
     _win32 >> $MAKEFILE
@@ -60,7 +72,7 @@ if [ -x "$(command -v dmd)" ]; then
     _linux64() {
         _mk "linux64" $LIN64
         for d in $ALL; do
-            echo -e '\t'"dmd -m64 -defaultlib=libphobos2.so -fPIC -shared -of$LIN64$PREFIX$d.so src/$d.d $SRC" 
+            echo -e '\t'"dmd -m64 -defaultlib=libphobos2.so -fPIC -shared -of$LIN64$(_nm $d).so src/$d.d $SRC" 
         done
     }
     _linux64 >> $MAKEFILE
@@ -74,10 +86,11 @@ if [ -x "$(command -v dmd64)" ]; then
     _win64(){
         _mk "win64" $WIN64
         for d in $ALL; do
+            nm=$(_nm $d)
             df=$DEFS$d.def
-            echo "LIBRARY \"$PREFIX$d.dll\"" > $df
+            echo "LIBRARY \"$nm.dll\"" > $df
             echo "EXPORTS RVExtension" >> $df
-            echo -e '\t'"dmd64 -L/DLL -of$WIN64$PREFIX$d.dll $SRC src/$d.d $df"
+            echo -e '\t'"dmd64 -L/DLL -of$WIN64$nm.dll $SRC src/$d.d $df"
         done
     }
     _win64 >> $MAKEFILE

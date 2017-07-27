@@ -38,6 +38,32 @@ and just linux 64
 make linux64
 ```
 
+## customize naming
+
+custom naming can be achieved via rename (`sed` conventions)
+```
+RENAMES="s/broadcast/mybrdcst/g" ./configure
+```
+
+## disable
+
+to disable certain objects (`sed` conventions)
+```
+DISABLE="s/broadcast//g" ./configure
+```
+
+## wine dmd builds
+
+to enable 32-bit wine based builds
+```
+DMD=/path/to/dmd.exe ./configure
+```
+
+to enable 64-bit wine based builds one must setup the MSFT stack for wine to use `link.exe` and have some wrapper script `dmd64`, picked up by
+```
+./configure
+```
+
 # plugins
 
 ## broadcast
