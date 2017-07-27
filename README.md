@@ -77,3 +77,22 @@ send and receive data/commands
 ## debug
 
 print to debugging trace
+
+# Receiving
+
+An example receiver in python (using zmq STREAM)
+```
+import zmq
+
+if __name__ == '__main__':
+
+    context = zmq.Context()
+    socket = context.socket(zmq.STREAM)
+    socket.bind("tcp://*:5555")
+
+    while True:
+        clientid, rcv = socket.recv_multipart()
+        print("id: %r" %clientid)
+        print(rcv.decode('utf-8'))
+        socket.send_multipart([clientid, "ack".encode("utf-8")])
+```
