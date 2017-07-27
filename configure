@@ -84,12 +84,16 @@ else
 fi
 
 if [[ $CMDS != "clean" ]]; then
-    sed -i "1s/^/all: $CMDS\n/" $MAKEFILE
+    sed -i "1s/^/all: $CMDS pack\n/" $MAKEFILE
     sed -i "1s/^/PHONY: all\n/" $MAKEFILE
     echo "clean:" >> $MAKEFILE
     echo -e '\t'"rm -rf $BIN" >> $MAKEFILE
     echo -e '\t'"mkdir -p $BIN" >> $MAKEFILE
+    echo 'PACK=$(shell find '$BIN'/ -type f | grep -E ".so|.dll" | sed "s/'$BIN'\///g")' >> $MAKEFILE
+    echo "pack:" >> $MAKEFILE
+    echo -e '\tcd '$BIN' && tar -cvf build.tar.gz $(PACK)' >> $MAKEFILE
 else
+    rm -f $MAKEFILE
     echo "no valid commands to make"
     exit 1
 fi
