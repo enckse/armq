@@ -18,20 +18,26 @@ LIN64=$BIN/lin64/
 CMDS="clean"
 PREFIX="armq_"
 MAKEFILE=Makefile
-echo "# Generated "$(date +%s) > $MAKEFILE
 
+echo "getting port settings"
 PORT=$ARMQ_PORT
 if [ -z "$PORT" ]; then
     PORT=5555
 fi
 echo "using port $PORT"
+echo "getting host settings"
 HOST=$ARMQ_HOST
 if [ -z "$HOST" ]; then
     HOST="localhost"
 fi
+
 echo "checking for disabled objects..."
 if [ ! -z "$DISABLE" ]; then
     ALL=$(echo $ALL | sed "$DISABLE")
+fi
+if [ -z "$ALL" ]; then
+    echo "all modules disabled"
+    exit 1
 fi
 echo "using host $HOST"
 echo "// generated "$(date +%Y-%m-%d-%s)"
@@ -51,6 +57,9 @@ _nm() {
         echo $1 | sed "$RENAMES"
     fi
 }
+
+echo "preparing make"
+echo "# Generated "$(date +%s) > $MAKEFILE
 
 echo "checking for dmd.exe"
 if [ -z "$DMD" ]; then
