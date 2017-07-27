@@ -8,6 +8,7 @@ import core.sys.windows.windows;
 import plugin_definition;
 import std.conv: to;
 
+// only needed for dll building
 version(Windows)
 {
     // Print to debugview output
