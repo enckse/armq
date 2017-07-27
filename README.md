@@ -5,6 +5,8 @@ ARMA3 output extensions for message queuing and information passing
 
 # build
 
+[![Build Status](https://travis-ci.org/enckse/armq.svg?branch=master)](https://travis-ci.org/enckse/armq)
+
 supported targets:
 * windows 32-bit (requires `wine` and `DMD` variable pointing to `dmd.exe`)
 * windows 64-bit (requires a helper `dmd64` to use MSFT `link.exe` and friends)
