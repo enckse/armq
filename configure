@@ -95,11 +95,11 @@ if [ -x "$(command -v dmd64)" ]; then
     _win64(){
         _mk "win64" $WIN64
         for d in $ALL; do
-            nm=$(_nm $d)
+            nm=$(_nm $d)"_x64.dll"
             df=$DEFS$d.def
-            echo "LIBRARY \"$nm.dll\"" > $df
+            echo "LIBRARY \"$nm\"" > $df
             echo "EXPORTS RVExtension" >> $df
-            echo -e '\t'"dmd64 -L/DLL -of$WIN64$nm.dll $SRC src/$d.d $df"
+            echo -e '\t'"dmd64 -L/DLL -of$WIN64$nm $SRC src/$d.d $df"
         done
     }
     _win64 >> $MAKEFILE
