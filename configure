@@ -6,7 +6,8 @@ ALL="$BRD $SND $DBG"
 SKIP=$(echo $ALL | sed "s/ /.d|/g")".d"
 DEFS=defs/
 mkdir -p $DEFS
-VARS=${DEFS}vars.d
+VARSD=vars.d
+VARS=${DEFS}$VARSD
 SRC=$(find src/ -type f | grep -v -E "$SKIP" | tr '\n' ' ')
 SRC=$SRC" "$VARS
 WINSRC=$(echo $SRC | sed -e "s/\//\\\\\\\\/g")
@@ -29,7 +30,8 @@ if [ -z "$HOST" ]; then
     HOST="localhost"
 fi
 echo "using host $HOST"
-echo "module vars;
+echo "// generated "$(date +%Y-%m-%d-%s)"
+module vars;
 public enum Port = $PORT;
 public enum Host = \"$HOST\";" > $VARS
 _mk() {
@@ -91,7 +93,8 @@ if [[ $CMDS != "clean" ]]; then
     echo -e '\t'"mkdir -p $BIN" >> $MAKEFILE
     echo 'PACK=$(shell find '$BIN'/ -type f | grep -E ".so|.dll" | sed "s/'$BIN'\///g")' >> $MAKEFILE
     echo "pack:" >> $MAKEFILE
-    echo -e '\tcd '$BIN' && tar -cvf build.tar.gz $(PACK)' >> $MAKEFILE
+    echo -e '\tcp '$VARS' '$BIN/$VARSD >> $MAKEFILE
+    echo -e '\tcd '$BIN' && tar -cvf build.tar.gz '$VARSD' $(PACK)' >> $MAKEFILE
 else
     rm -f $MAKEFILE
     echo "no valid commands to make"
