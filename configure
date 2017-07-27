@@ -15,6 +15,7 @@ WIN32=$BIN/win32/
 WIN64=$BIN/win64/
 LIN64=$BIN/lin64/
 CMDS="clean"
+PREFIX="armq_"
 MAKEFILE=Makefile
 echo "# Generated "$(date +%s) > $MAKEFILE
 
@@ -45,7 +46,7 @@ else
     _win32() {
         _mk "win32" $WIN32
         for d in $ALL; do
-            echo -e '\t'"wine $DMD -m32 -of$WIN32$d.dll $SRC src/$d.d"
+            echo -e '\t'"wine $DMD -m32 -of$WIN32$PREFIX$d.dll $SRC src/$d.d"
         done
     }
     _win32 >> $MAKEFILE
@@ -57,7 +58,7 @@ if [ -x "$(command -v dmd)" ]; then
     _linux64() {
         _mk "linux64" $LIN64
         for d in $ALL; do
-            echo -e '\t'"dmd -m64 -defaultlib=libphobos2.so -fPIC -shared -of$LIN64$d.so src/$d.d $SRC" 
+            echo -e '\t'"dmd -m64 -defaultlib=libphobos2.so -fPIC -shared -of$LIN64$PREFIX$d.so src/$d.d $SRC" 
         done
     }
     _linux64 >> $MAKEFILE
@@ -72,9 +73,9 @@ if [ -x "$(command -v dmd64)" ]; then
         _mk "win64" $WIN64
         for d in $ALL; do
             df=$DEFS$d.def
-            echo "LIBRARY \"$d.dll\"" > $df
+            echo "LIBRARY \"$PREFIX$d.dll\"" > $df
             echo "EXPORTS RVExtension" >> $df
-            echo -e '\t'"dmd64 -L/DLL -of$WIN64$d.dll $SRC src/$d.d $df"
+            echo -e '\t'"dmd64 -L/DLL -of$WIN64$PREFIX$d.dll $SRC src/$d.d $df"
         done
     }
     _win64 >> $MAKEFILE
