@@ -74,7 +74,7 @@ send data broadcasts out
 
 send and receive data/commands
 
-## debug
+## debugger
 
 print to debugging trace
 
