@@ -14,6 +14,10 @@ version(Windows)
 {
     extern(Windows) void OutputDebugStringA(LPCSTR lpString);
 }
+else
+{
+    import std.stdio: writeln;
+}
 
 // Minor version number
 public enum Minor = '0';
@@ -31,6 +35,10 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
         version(Windows)
         {
             OutputDebugStringA(trace.toStringz());
+        }
+        else
+        {
+            writeln(trace);
         }
 
         status = '2';
