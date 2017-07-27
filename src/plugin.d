@@ -8,9 +8,9 @@ import core.sys.windows.windows;
 import plugin_definition;
 import std.conv: to;
 
-// Print to debugview output
 version(Windows)
 {
+    // Print to debugview output
     extern(Windows)
     {
         void OutputDebugStringA(LPCSTR lpString);
