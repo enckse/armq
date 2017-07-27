@@ -74,7 +74,7 @@ if [ -x "$(command -v dmd64)" ]; then
             df=$DEFS$d.def
             echo "LIBRARY \"$d.dll\"" > $df
             echo "EXPORTS RVExtension" >> $df
-            echo -e '\t'"dmd64 -of$WIN64$d.dll $SRC src/$d.d $df"
+            echo -e '\t'"dmd64 -L/DLL -of$WIN64$d.dll $SRC src/$d.d $df"
         done
     }
     _win64 >> $MAKEFILE
