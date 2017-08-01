@@ -18,25 +18,29 @@ public enum Minor = '0';
 static void pluginOperation(char* output, int output_size, const char* cinput)
 {
     auto input = to!string(cinput);
-    bool hasResponse = false;
     string respond;
     switch (input)
     {
         case "connect":
-            hasResponse = true;
             respond = "true";
             break;
         case "separator":
-            hasResponse = true;
             respond = "\"`\"";
             break;
+        case "replay":
+            respond = "\"0\"";
+            break;
+        case "player":
+        case "event":
+            respond = "\"\"";
+            break;
         default:
+            respond = "unknown";
             break;
     }
 
     sendReceive(input, Types.Broadcast);
-    if (hasResponse)
-    {
-        write(output, output_size, format("[\"ok\", %s]", respond));
-    }
+
+    // NOTE: It's always 'ok' here
+    write(output, output_size, format("[\"ok\", %s]", respond));
 }
