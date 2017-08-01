@@ -28,7 +28,7 @@ static Socket newSocket()
 /**
  * send/receive requests
  */
-static string sendReceive(const char* send, Types type)
+static string sendReceive(string send, Types type)
 {
     import std.conv: to;
     try

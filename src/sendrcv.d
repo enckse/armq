@@ -5,6 +5,7 @@
  */
 module plugin_definition;
 import definitions;
+import std.conv: to;
 import tcp_common;
 
 // Minor version number
@@ -15,7 +16,7 @@ public enum Minor = '0';
  */
 static void pluginOperation(char* output, int output_size, const char* cinput)
 {
-    auto res = sendReceive(cinput, Types.SendRcv);
+    auto res = sendReceive(to!string(cinput), Types.SendRcv);
     auto lastIndex = -1;
     auto useLength = res.length;
     if (res.length > output_size - 1)

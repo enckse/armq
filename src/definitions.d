@@ -85,16 +85,13 @@ struct DataPacket
     /**
      * Create a data packet
      */
-    static DataPacket* create(string control, const char* data)
+    static DataPacket* create(string control, string data)
     {
         import std.conv: to;
-        import std.datetime;
         import std.uuid;
         auto packet = new DataPacket();
         packet.control = control;
-        packet.data = to!string(data);
         packet.id = to!string(randomUUID());
-        packet.timestamp = to!string(Clock.currStdTime());
         return packet;
     }
 }
