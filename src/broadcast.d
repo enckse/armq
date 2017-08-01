@@ -37,6 +37,6 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
     sendReceive(input, Types.Broadcast);
     if (hasResponse)
     {
-        write(output, output_size, format("[\"ok\", {}]", respond));
+        write(output, output_size, format("[\"ok\", %s]", respond));
     }
 }
