@@ -91,6 +91,7 @@ struct DataPacket
         import std.uuid;
         auto packet = new DataPacket();
         packet.control = control;
+        packet.data = data;
         packet.id = to!string(randomUUID());
         return packet;
     }

@@ -17,16 +17,25 @@ public enum Minor = '0';
 static void pluginOperation(char* output, int output_size, const char* cinput)
 {
     auto input = to!string(cinput);
+    bool hasResponse = false;
+    string respond;
     switch (input)
     {
         case "connect":
-            write(output, output_size, "true");
+            hasResponse = true;
+            respond = "true";
             break;
         case "separator":
-            write(output, output_size, "\"`\"");
+            hasResponse = true;
+            respond = "\"`\"";
             break;
         default:
-            sendReceive(input, Types.Broadcast);
             break;
+    }
+
+    sendReceive(input, Types.Broadcast);
+    if (hasResponse)
+    {
+        write(output, output_size, respond);
     }
 }
