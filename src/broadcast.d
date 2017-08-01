@@ -6,6 +6,7 @@
 module plugin_definition;
 import definitions;
 import std.conv: to;
+import std.string: format;
 import tcp_common;
 
 // Minor version number
@@ -36,6 +37,6 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
     sendReceive(input, Types.Broadcast);
     if (hasResponse)
     {
-        write(output, output_size, respond);
+        write(output, output_size, format("[\"ok\", {}]", respond));
     }
 }
