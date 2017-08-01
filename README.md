@@ -38,6 +38,11 @@ and just linux 64
 make linux64
 ```
 
+to switch out and use this instead of the default [r3](https://github.com/alexcroox/r3)
+```
+ARMQ_HOST="localhost" ./configure r3
+```
+
 ## customize naming
 
 custom naming can be achieved via rename (`sed` conventions)
