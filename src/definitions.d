@@ -97,6 +97,9 @@ struct DataPacket
     }
 }
 
+/**
+ * Write to output a response
+ */
 public static void write(char* output, int output_size, string res)
 {
     auto lastIndex = -1;
