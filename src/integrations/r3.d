@@ -4,6 +4,7 @@
  * R3 integration
  */
 module integrations.r3;
+import std.datetime: Clock;
 import std.string: format, split;
 
 // Message/command delimiter
@@ -32,7 +33,12 @@ public static string handle(string input)
             respond = Delimiter;
             break;
         case "replay":
-            respond = "0";
+            auto time = Clock.currTime();
+            respond = format("%s%s%s%s",
+                             time.dayOfYear,
+                             time.hour,
+                             time.minute,
+                             time.second);
             break;
         case "player":
         case "event":
