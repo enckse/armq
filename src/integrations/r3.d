@@ -3,7 +3,7 @@
  * MIT License
  * R3 integration
  */
-module r3_integration;
+module integrations.r3;
 import std.string: format, split;
 
 // Message/command delimiter
