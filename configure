@@ -2,22 +2,27 @@
 
 _integrate=""
 _dmdflags=""
+_renames=""
+_disables=""
 case $1 in
     "r3")
         if [ -z "$ARMQ_HOST" ]; then
             echo "armq host required for this integration"
             exit 1
         fi
+        _renames="s/broadcast/r3extension/g;s/debugger/armq_debug/g"
         _dmdflags="R3"
         _integrate="r3"
+        _disables="s/sendrcv//g"
         ;;
 esac
 
 export ARMQ_PORT=$ARMQ_PORT
 export ARMQ_HOST=$ARMQ_HOST
-export DISABLE=$DISABLE
+export DISABLE=$_disables
 export RENAMES=$_renames
 export ARMQ_INTEGRATE=$_integrate
+export DMD=$DMD
 if [ ! -z "$_dmdflags" ]; then
     export DMD_FLAGS="-version=$_dmdflags"
 fi
