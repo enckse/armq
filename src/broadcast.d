@@ -20,6 +20,8 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
     auto input = to!string(cinput);
     string respond = "";
     bool hasResponse = false;
+
+// r3 integration/handof
 version(R3)
 {
     import integrations.r3;
