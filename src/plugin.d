@@ -5,6 +5,7 @@
  */
 import core.sys.windows.dll;
 import core.sys.windows.windows;
+import definitions;
 import plugin_definition;
 import std.conv: to;
 
@@ -60,10 +61,7 @@ export extern(Windows) void RVExtension(char* output,
 {
     if (to!string(cinput) == "version")
     {
-        output[0] = '1';
-        output[1] = '.';
-        output[2] = Minor;
-        output[3] = '\0';
+        write(output, output_size, "1." ~ Minor);
     }
     else
     {

@@ -17,18 +17,5 @@ public enum Minor = '0';
 static void pluginOperation(char* output, int output_size, const char* cinput)
 {
     auto res = sendReceive(to!string(cinput), Types.SendRcv);
-    auto lastIndex = -1;
-    auto useLength = res.length;
-    if (res.length > output_size - 1)
-    {
-        useLength = output_size;
-    }
-
-    for (int i = 0; i < useLength; i++)
-    {
-        output[i] = res[i];
-        lastIndex = i;
-    }
-
-    output[lastIndex + 1] = '\0';
+    write(output, output_size, res);
 }
