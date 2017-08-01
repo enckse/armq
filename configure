@@ -26,4 +26,4 @@ export DMD=$DMD
 if [ ! -z "$_dmdflags" ]; then
     export DMD_FLAGS="-version=$_dmdflags"
 fi
-./configure.sh
+./generate.sh
