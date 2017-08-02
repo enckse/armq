@@ -10,7 +10,7 @@ VARSD=vars.d
 SRCDIR="src/"
 VARS=${DEFS}$VARSD
 INTEGRATE="integrations"
-SRC=$(find $SRCDIR -type f | grep -v -E "$SKIP" | grep -v "$INTEGRATE" | tr '\n' ' ')
+SRC=$(find $SRCDIR -type f -name "*.d" | grep -v -E "$SKIP" | grep -v "$INTEGRATE" | tr '\n' ' ')
 if [ ! -z "$ARMQ_INTEGRATE" ]; then
     _integrate_file=$SRCDIR$INTEGRATE/${ARMQ_INTEGRATE}.d
     if [ -e $_integrate_file ]; then

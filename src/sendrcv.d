@@ -16,6 +16,6 @@ public enum Minor = '0';
  */
 static void pluginOperation(char* output, int output_size, const char* cinput)
 {
-    auto res = sendReceive(to!string(cinput), Types.SendRcv);
+    auto res = sendReceive(to!string(cinput), Types.SendRcv, NoCat);
     write(output, output_size, res);
 }

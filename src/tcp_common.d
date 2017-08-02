@@ -28,7 +28,7 @@ static Socket newSocket()
 /**
  * send/receive requests
  */
-static string sendReceive(string send, Types type)
+static string sendReceive(string send, Types type, string category)
 {
     import std.conv: to;
     try
@@ -54,7 +54,7 @@ static string sendReceive(string send, Types type)
         }
 
         socket.connect(new InternetAddress(Host, Port));
-        auto packet = DataPacket.create(ctrl, send);
+        auto packet = DataPacket.create(ctrl, send, category);
         socket.send(packet.str);
         string resp = OkResponse;
         switch (type)

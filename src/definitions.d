@@ -12,6 +12,11 @@ import std.string : indexOf, join, lastIndexOf, split;
 enum DefaultBuffer = 32768;
 
 /**
+ * No category
+ */
+enum NoCat = "armq";
+
+/**
  * Types of commands that can be set to the orchestration server
  */
 enum Types
@@ -72,6 +77,11 @@ struct DataPacket
     string data;
 
     /**
+     * Category to apply
+     */
+    string category;
+
+    /**
      * Create a string from the packet
      */
     string str()
@@ -79,13 +89,14 @@ struct DataPacket
         return this.control ~ Delimiter ~
                this.id ~ Delimiter ~
                this.timestamp ~ Delimiter ~
+               this.category ~ Delimiter ~
                this.data;
     }
 
     /**
      * Create a data packet
      */
-    static DataPacket* create(string control, string data)
+    static DataPacket* create(string control, string category, string data)
     {
         import std.conv: to;
         import std.datetime: Clock;
@@ -95,6 +106,7 @@ struct DataPacket
         packet.data = data;
         packet.timestamp = to!string(Clock.currStdTime());
         packet.id = to!string(randomUUID());
+        packet.category = category;
         return packet;
     }
 }
