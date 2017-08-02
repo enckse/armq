@@ -5,16 +5,21 @@ _dmdflags=""
 _renames=""
 _disables=""
 echo "checking integration type...$1"
+if [ ! -z "$1" ]; then
+    if [ -z "$ARMQ_HOST" ]; then
+        echo "armq host must be set for integrations"
+        exit 1
+    fi
+fi
 case $1 in
     "r3")
-        if [ -z "$ARMQ_HOST" ]; then
-            echo "armq host required for this integration"
-            exit 1
-        fi
         _renames="s/broadcast/r3_extension/g;s/debugger/armq_debug/g"
         _dmdflags="R3"
         _integrate="r3"
         _disables="s/sendrcv//g"
+        ;;
+    "prefix")
+        _dmdflags="Prefix"
         ;;
 esac
 

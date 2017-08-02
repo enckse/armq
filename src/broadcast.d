@@ -28,6 +28,13 @@ version(R3)
     respond = handle(input);
     hasResponse = true;
 }
+else
+{
+    version (Prefix)
+    {
+        input = "armq-" ~ input;
+    }
+}
     sendReceive(input, Types.Broadcast);
     if (hasResponse && respond.length > 0)
     {
