@@ -18,9 +18,6 @@ case $1 in
         _renames="s/broadcast/r3_extension/g;s/debugger/armq_debug/g"
         _dmdflags="R3"
         ;;
-    "prefix")
-        _dmdflags="Prefix"
-        ;;
 esac
 
 export ARMQ_PORT=$ARMQ_PORT
