@@ -54,7 +54,7 @@ static string sendReceive(string send, Types type, string category)
         }
 
         socket.connect(new InternetAddress(Host, Port));
-        auto packet = DataPacket.create(ctrl, send, category);
+        auto packet = DataPacket.create(ctrl, category, send);
         socket.send(packet.str);
         string resp = OkResponse;
         switch (type)
