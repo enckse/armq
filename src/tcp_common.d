@@ -28,33 +28,14 @@ static Socket newSocket()
 /**
  * send/receive requests
  */
-static string sendReceive(string send, Types type, int category)
+static string sendReceive(string send, Types type, Categories category)
 {
     import std.conv: to;
     try
     {
-        ushort port = cast(ushort)type;
         auto socket = newSocket();
-        auto ctrl = "none";
-        switch (type)
-        {
-            case Types.SendRcv:
-                ctrl = SendRcvData;
-                break;
-            case Types.Broadcast:
-                ctrl = BroadcastData;
-                break;
-            default:
-                break;
-        }
-
-        if (ctrl.length != 5)
-        {
-            throw new Exception("unknown control type");
-        }
-
         socket.connect(new InternetAddress(Host, Port));
-        auto packet = DataPacket.create(ctrl, category, send);
+        auto packet = DataPacket.create(type, category, send);
         socket.send(packet.str);
         string resp = OkResponse;
         switch (type)
