@@ -12,7 +12,10 @@ VARS=${DEFS}$VARSD
 INTEGRATE="integrations"
 SRC=$(find $SRCDIR -type f | grep -v -E "$SKIP" | grep -v "$INTEGRATE" | tr '\n' ' ')
 if [ ! -z "$ARMQ_INTEGRATE" ]; then
-    SRC=$SRC" $SRCDIR$INTEGRATE/"${ARMQ_INTEGRATE}.d
+    _integrate_file = $SRCDIR$INTEGRATE/${ARMQ_INTEGRATE}.d
+    if [ -e $_integrate_file ]; then
+        SRC=$SRC" "$_integrate_file
+    fi
 fi
 SRC=$SRC" "$VARS
 WINSRC=$(echo $SRC | sed -e "s/\//\\\\\\\\/g")
