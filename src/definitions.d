@@ -62,11 +62,6 @@ struct DataPacket
     string id;
 
     /**
-     * Packet timestmp
-     */
-    string timestamp;
-
-    /**
      * data to send
      */
     string data;
@@ -78,7 +73,6 @@ struct DataPacket
     {
         return this.control ~ Delimiter ~
                this.id ~ Delimiter ~
-               this.timestamp ~ Delimiter ~
                this.data;
     }
 
