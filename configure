@@ -4,6 +4,7 @@ _integrate=""
 _dmdflags=""
 _renames=""
 _disables=""
+echo "checking integration type...$1"
 case $1 in
     "r3")
         if [ -z "$ARMQ_HOST" ]; then
