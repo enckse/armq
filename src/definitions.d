@@ -88,10 +88,12 @@ struct DataPacket
     static DataPacket* create(string control, string data)
     {
         import std.conv: to;
+        import std.datetime: Clock;
         import std.uuid;
         auto packet = new DataPacket();
         packet.control = control;
         packet.data = data;
+        packet.timestamp = to!string(Clock.currStdTime());
         packet.id = to!string(randomUUID());
         return packet;
     }
