@@ -32,7 +32,7 @@ else
 {
     version (Prefix)
     {
-        input = "armq-" ~ input;
+        input = "armq->" ~ input;
     }
 }
     sendReceive(input, Types.Broadcast);
