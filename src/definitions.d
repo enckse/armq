@@ -14,7 +14,7 @@ enum DefaultBuffer = 32768;
 /**
  * No category
  */
-enum NoCat = "armq";
+enum NoCat = 0;
 
 /**
  * Types of commands that can be set to the orchestration server
@@ -96,7 +96,7 @@ struct DataPacket
     /**
      * Create a data packet
      */
-    static DataPacket* create(string control, string category, string data)
+    static DataPacket* create(string control, int category, string data)
     {
         import std.conv: to;
         import std.datetime: Clock;
@@ -106,7 +106,7 @@ struct DataPacket
         packet.data = data;
         packet.timestamp = to!string(Clock.currStdTime());
         packet.id = to!string(randomUUID());
-        packet.category = category;
+        packet.category = to!string(category);
         return packet;
     }
 }

@@ -20,7 +20,7 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
     auto input = to!string(cinput);
     string respond = "";
     bool hasResponse = false;
-    string cat = NoCat;
+    int cat = NoCat;
 
 // r3 integration/handof
 version(R3)
@@ -28,7 +28,7 @@ version(R3)
     import integrations.r3;
     respond = handle(input);
     hasResponse = true;
-    cat = "isr3";
+    cat = 1;
 }
     sendReceive(input, Types.Broadcast, cat);
     if (hasResponse && respond.length > 0)
