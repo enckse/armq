@@ -2,7 +2,7 @@
     "include":
     [
         {
-            "directories": ["src"],
+            "directories": ["src", "test"],
             "name": "\\.d$",
             "recursive": "true"
         }
