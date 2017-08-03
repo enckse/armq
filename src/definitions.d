@@ -18,7 +18,6 @@ enum Categories
 {
     // No special category
     None = "n",
-
     // Integration category
     Integration = "i"
 }
@@ -107,6 +106,13 @@ struct DataPacket
         packet.category = category;
         return packet;
     }
+
+    /// create a packet
+    unittest
+    {
+        auto pck = DataPacket.create(Types.Broadcast, Categories.None, "test");
+        assert("", pck.str());
+    }
 }
 
 /**
@@ -128,4 +134,12 @@ public static void write(char* output, int output_size, string res)
     }
 
     output[lastIndex + 1] = '\0';
+}
+
+/// writing to out
+unittest
+{
+    import std.string: toStringz;
+    char* output = toStringz("1234567890");
+    write(output, 10, "blah");
 }
