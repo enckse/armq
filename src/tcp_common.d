@@ -68,33 +68,24 @@ private class NormalSocket : ISocket
 }
 
 /**
- * Create the socket type we need
- */
-static ISocket newSocket()
-{
-    return new NormalSocket();
-}
-
-/**
  * send/receive requests
  */
 static string sendReceive(string send, Types type, Categories category)
 {
-    return sendReceiveSocket(send, type, category, &newSocket);
+    return sendReceiveData(send, type, category, new NormalSocket());
 }
 
 /**
- * Socket comms
+ * Send and receive data on a socket
  */
-static string sendReceiveSocket(string send,
-                                Types type,
-                                Categories category,
-                                ISocket function() factory)
+private static string sendReceiveData(string send,
+                                      Types type,
+                                      Categories category,
+                                      ISocket socket)
 {
     import std.conv: to;
     try
     {
-        auto socket = newSocket();
         socket.connect(new InternetAddress(Host, Port));
         auto packet = DataPacket.create(type, category, send);
         socket.send(packet.str);
@@ -116,4 +107,53 @@ static string sendReceiveSocket(string send,
     {
         return ErrorResponse;
     }
+}
+
+///
+unittest
+{
+    import std.conv: to;
+
+    // mock implementation
+    class MockSocket : ISocket
+    {
+        // calls requested
+        @property public string[] calls;
+
+        // mock connect
+        void connect(InternetAddress addr)
+        {
+            calls ~= "connect";
+        }
+
+        // mock send
+        void send(string data)
+        {
+            calls ~= "send";
+        }
+
+        // mock receive
+        ptrdiff_t receive(char[] buffer)
+        {
+            calls ~= "receive";
+            buffer[0] = 'a';
+            buffer[1] = 'c';
+            buffer[2] = 'k';
+            return 3;
+        }
+    }
+
+    auto s = new MockSocket();
+    auto resp = sendReceiveData("test", Types.Broadcast, Categories.None, s);
+    assert("resp:ok" == resp);
+    assert(2 == s.calls.length);
+    assert("connect" == s.calls[0]);
+    assert("send" == s.calls[1]);
+    s = new MockSocket();
+    resp = sendReceiveData("test", Types.SendRcv, Categories.Integration, s);
+    assert("ack" == resp);
+    assert(3 == s.calls.length);
+    assert("connect" == s.calls[0]);
+    assert("send" == s.calls[1]);
+    assert("receive" == s.calls[2]);
 }
