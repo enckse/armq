@@ -127,6 +127,10 @@ if [[ $CMDS != "clean" ]]; then
     echo "pack:" >> $MAKEFILE
     echo -e '\tcp '$VARS' '$BIN/$VARSD >> $MAKEFILE
     echo -e '\tcd '$BIN' && tar -cvf build.tar.gz '$VARSD' $(PACK)' >> $MAKEFILE
+    echo "tests:" >> $MAKEFILE
+    _test_harn=$BIN/test_harness
+    echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' test/harness.d' >> $MAKEFILE
+    echo -e '\t./'$_test_harn >> $MAKEFILE
 else
     rm -f $MAKEFILE
     echo "no valid commands to make"

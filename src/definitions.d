@@ -111,7 +111,61 @@ struct DataPacket
     unittest
     {
         auto pck = DataPacket.create(Types.Broadcast, Categories.None, "test");
-        assert("", pck.str());
+        import std.conv: to;
+        auto str = pck.str();
+        for (int idx = 0; idx < str.length; idx++)
+        {
+            auto ch = str[idx];
+            if ((idx > 1 && idx < 10) ||
+                (idx > 10 && idx < 15) ||
+                (idx > 15 && idx < 20) ||
+                (idx > 25 && idx < 38) ||
+                (idx > 20 && idx < 25))
+            {
+                if (!((ch <= '9' && ch >= '0') || (ch >= 'a' && ch <= 'f')))
+                {
+                    assert(false, "invalid uuid char: " ~ to!string(idx));
+                }
+
+                continue;
+            }
+
+            if (idx > 38 && idx < 57)
+            {
+                if (!(ch >= '0' && ch <= '9'))
+                {
+                    assert(false, "invalid time char: " ~ to!string(idx));
+                }
+
+                continue;
+            }
+
+            if (idx > 59)
+            {
+                assert("test" == str[idx..str.length]);
+                break;
+            }
+
+            char[int] asserting;
+            asserting[0] = 'b';
+            asserting[1] = ':';
+            asserting[38] = ':';
+            asserting[57] = ':';
+            asserting[59] = ':';
+            asserting[10] = '-';
+            asserting[15] = '-';
+            asserting[20] = '-';
+            asserting[25] = '-';
+            asserting[58] = 'n';
+            if (idx in asserting)
+            {
+                assert(asserting[idx] == ch);
+            }
+            else
+            {
+                assert(false, "idx, char " ~ to!string(idx) ~ "," ~ ch);
+            }
+        }
     }
 }
 
@@ -139,7 +193,10 @@ public static void write(char* output, int output_size, string res)
 /// writing to out
 unittest
 {
-    import std.string: toStringz;
-    char* output = toStringz("1234567890");
-    write(output, 10, "blah");
+    char[] buffer = "1234567890abc".dup;
+    buffer ~= '\0';
+    write(buffer.ptr, 10, "blahblahblah");
+    string data = cast(string)buffer;
+    import std.stdio;
+    assert(data[0..11] == "blahblahbl\0");
 }
