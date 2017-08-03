@@ -130,9 +130,9 @@ public enum Host = \"$HOST\";" > $VARS
         echo "pack:" >> $MAKEFILE
         echo -e '\tcp '$VARS' '$BIN/$VARSD >> $MAKEFILE
         echo -e '\tcd '$BIN' && tar -cvf build.tar.gz '$VARSD' $(PACK)' >> $MAKEFILE
-        echo "tests:" >> $MAKEFILE
+        echo "test:" >> $MAKEFILE
         _test_harn=$BIN/test_harness
-        echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' '$INTSRC' test/harness.d' >> $MAKEFILE
+        echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' '$INTSRC' util/test.d' >> $MAKEFILE
         echo -e '\t./'$_test_harn >> $MAKEFILE
     else
         rm -f $MAKEFILE

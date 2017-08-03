@@ -3,7 +3,7 @@ language: d
 script:
     - ./configure
     - make linux64
-    - make tests
+    - make test
     - ARMQ_HOST=localhost ./configure r3
     - make linux64
     - ARMQ_HOST=localhost ./configure prefix
