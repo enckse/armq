@@ -12,6 +12,7 @@ _generate()
     SRCDIR="src/"
     VARS=${DEFS}$VARSD
     INTEGRATE="integrations"
+    INTSRC=$(find $SRCDIR -type f -name "*.d" | grep "$INTEGRATE" | tr '\n' ' ')
     SRC=$(find $SRCDIR -type f -name "*.d" | grep -v -E "$SKIP" | grep -v "$INTEGRATE" | tr '\n' ' ')
     if [ ! -z "$ARMQ_INTEGRATE" ]; then
         _integrate_file=$SRCDIR$INTEGRATE/${ARMQ_INTEGRATE}.d
@@ -131,7 +132,7 @@ public enum Host = \"$HOST\";" > $VARS
         echo -e '\tcd '$BIN' && tar -cvf build.tar.gz '$VARSD' $(PACK)' >> $MAKEFILE
         echo "tests:" >> $MAKEFILE
         _test_harn=$BIN/test_harness
-        echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' test/harness.d' >> $MAKEFILE
+        echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' '$INTSRC' test/harness.d' >> $MAKEFILE
         echo -e '\t./'$_test_harn >> $MAKEFILE
     else
         rm -f $MAKEFILE
