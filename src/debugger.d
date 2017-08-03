@@ -14,9 +14,11 @@ version(Windows)
 {
     extern(Windows) void OutputDebugStringA(LPCSTR lpString);
 }
-else
+
+// Posix handling
+version(Posix)
 {
-    import std.stdio: writeln;
+    import core.sys.posix.syslog;
 }
 
 // Minor version number
@@ -30,15 +32,16 @@ static void pluginOperation(char* output, int output_size, const char* cinput)
     auto status = '0';
     try
     {
-        auto trace = "arma3_debug -> " ~ to!string(cinput);
+        auto trace = ("arma3_debug -> " ~ to!string(cinput)).toStringz();
         status = '1';
         version(Windows)
         {
-            OutputDebugStringA(trace.toStringz());
+            OutputDebugStringA(trace);
         }
-        else
+
+        version(linux)
         {
-            writeln(trace);
+            syslog(LOG_INFO, trace);
         }
 
         status = '2';
