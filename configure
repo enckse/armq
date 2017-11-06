@@ -25,12 +25,15 @@ _generate()
     BIN=bin
     WIN32=$BIN/win32/
     WIN64=$BIN/win64/
-    LIN64=$BIN/lin64/
+    LINUX=$BIN/linux/
     CMDS="clean"
     PREFIX="armq_"
     MAKEFILE=Makefile
     DMD_FLAGS=$DMD_FLAGS
-    
+    BITNESS="32"
+    if ((1<<32)); then
+        BITNESS="64"
+    fi
     echo "getting port settings"
     PORT=$ARMQ_PORT
     if [ -z "$PORT" ]; then
@@ -91,13 +94,13 @@ public enum Host = \"$HOST\";" > $VARS
     echo "checking for dmd"
     if [ -x "$(command -v dmd)" ]; then
         echo "ok"
-        _linux64() {
-            _mk "linux64" $LIN64
+        _linux() {
+            _mk "linux" $LINUX
             for d in $ALL; do
-                echo -e '\t'"dmd $DMD_FLAGS -m64 -fPIC -shared -of$LIN64$(_nm $d).so src/$d.d $SRC" 
+                echo -e '\t'"dmd $DMD_FLAGS -m$BITNESS -fPIC -shared -of$LINUX$(_nm $d).so src/$d.d $SRC" 
             done
         }
-        _linux64 >> $MAKEFILE
+        _linux >> $MAKEFILE
     else
         echo "no dmd for linux..."
     fi
@@ -132,7 +135,7 @@ public enum Host = \"$HOST\";" > $VARS
         echo -e '\tcd '$BIN' && tar -cvf build.tar.gz '$VARSD' $(PACK)' >> $MAKEFILE
         echo "test:" >> $MAKEFILE
         _test_harn=$BIN/test_harness
-        echo -e '\tdmd -m64 -defaultlib=libphobos2.so -unittest -of'$_test_harn' '$SRC' '$INTSRC' util/test.d' >> $MAKEFILE
+        echo -e '\tdmd -m'$BITNESS' -unittest -of'$_test_harn' '$SRC' '$INTSRC' util/test.d' >> $MAKEFILE
         echo -e '\t./'$_test_harn >> $MAKEFILE
     else
         rm -f $MAKEFILE
