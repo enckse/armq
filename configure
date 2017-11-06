@@ -94,7 +94,7 @@ public enum Host = \"$HOST\";" > $VARS
         _linux64() {
             _mk "linux64" $LIN64
             for d in $ALL; do
-                echo -e '\t'"dmd $DMD_FLAGS -m64 -defaultlib=libphobos2.so -fPIC -shared -of$LIN64$(_nm $d).so src/$d.d $SRC" 
+                echo -e '\t'"dmd $DMD_FLAGS -m64 -fPIC -shared -of$LIN64$(_nm $d).so src/$d.d $SRC" 
             done
         }
         _linux64 >> $MAKEFILE
