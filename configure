@@ -30,9 +30,10 @@ _generate()
     PREFIX="armq_"
     MAKEFILE=Makefile
     DMD_FLAGS=$DMD_FLAGS
-    BITNESS="32"
-    if ((1<<32)); then
-        BITNESS="64"
+    BITNESS="64"
+    file /bin/bash | grep -q "ELF 32-bit"
+    if [ $? -eq 0 ]; then
+	    BITNESS="32"
     fi
     echo "getting port settings"
     PORT=$ARMQ_PORT
