@@ -33,9 +33,9 @@ for just win64
 make win64
 ```
 
-and just linux 64
+and just linux (32-bit on 32-bit system, 64-bit on 64-bit system)
 ```
-make linux64
+make linux
 ```
 
 to switch out and use this instead of the default [r3](https://github.com/alexcroox/r3)
