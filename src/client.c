@@ -83,7 +83,7 @@ void RVExtension(char *output, int outputSize, const char *function)
     }
     else
     {
-        char* res = senddata((char*)function);
+        char* res = senddata(strdup(function));
         strncpy(output, res, outputSize);
     }
 
