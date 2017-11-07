@@ -2,7 +2,10 @@
 #include <arpa/inet.h> 
 #include <unistd.h>
 
+// IP address (localhost, no network latency)
 #define IP "127.0.0.1"
+
+// Return strings from sending
 #define SUCCESS "SUCCESS"
 #define SOCKET_ERROR "SOCKET"
 #define INET_ERROR "INET"
@@ -15,16 +18,20 @@
 int sendall(int s, char *buf, size_t len)
 {
     size_t total = 0;
-    size_t bytesleft = len;
+    size_t left = len;
     size_t n;
     int errors = 0;
-
-    while(total < len) {
-        n = send(s, buf+total, bytesleft, 0);
+    while(total < len)
+    {
+        n = send(s, buf+total, left, 0);
         if (n < 0)
-        { errors++; break; }
+        {
+            errors++;
+            break;
+        }
+
         total += n;
-        bytesleft -= n;
+        left -= n;
     }
 
     return errors;
@@ -33,13 +40,11 @@ int sendall(int s, char *buf, size_t len)
 /**
  * Send data
  **/
-char* senddata(const char* data)
+char* senddata(char* data)
 {
-    int sockfd = 0, n = 0;
-    char recvBuff[1024];
+    int sockfd = 0;
+    int n = 0;
     struct sockaddr_in serv_addr; 
-
-    memset(recvBuff, '0',sizeof(recvBuff));
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
         return SOCKET_ERROR;
@@ -48,8 +53,7 @@ char* senddata(const char* data)
     memset(&serv_addr, '0', sizeof(serv_addr)); 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT); 
-
-    if(inet_pton(AF_INET, IP, &serv_addr.sin_addr)<=0)
+    if(inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
     {
         return INET_ERROR;
     } 
@@ -58,9 +62,12 @@ char* senddata(const char* data)
     {
        return CONN_ERROR;
     }
-    if (sendall(sockfd, "test", sizeof("test")) > 0) {
+
+    if (sendall(sockfd, data, sizeof("test")) > 0)
+    {
         return SEND_ERROR;
     }
+
     close(sockfd);
     return SUCCESS;
 }
@@ -76,10 +83,10 @@ void RVExtension(char *output, int outputSize, const char *function)
     }
     else
     {
-        char* res = senddata(function);
+        char* res = senddata((char*)function);
         strncpy(output, res, outputSize);
     }
-    output[outputSize-1]='\0';
 
+    output[outputSize-1]='\0';
     return;
 }
