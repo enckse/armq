@@ -139,7 +139,22 @@ void RVExtension(char *output, int outputSize, const char *function)
     char* res = run(function);
     char* buffer = (char*)malloc(100 * sizeof(char));
     snprintf(buffer, 100, "[\"ok\", %s]", res);
-    strncpy(output, res, outputSize);
+    strncpy(output, buffer, outputSize);
     output[outputSize-1]='\0';
     return;
 }
+
+#ifdef HARNESS
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        printf("argument required\n");
+        return 1;
+    }
+
+    char* buffer = (char*)malloc(100 * sizeof(char));
+    RVExtension(buffer, 100, argv[1]);
+    printf("%s\n", buffer);
+}
+#endif
