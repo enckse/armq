@@ -2,9 +2,7 @@
 #include <arpa/inet.h> 
 #include <unistd.h>
 
-#define PORT 5000
 #define IP "127.0.0.1"
-#define VERSION "1.0"
 #define SUCCESS "SUCCESS"
 #define SOCKET_ERROR "SOCKET"
 #define INET_ERROR "INET"
@@ -67,6 +65,9 @@ char* senddata(const char* data)
     return SUCCESS;
 }
 
+/**
+ * ARMA3 extension
+ **/
 void RVExtension(char *output, int outputSize, const char *function)
 {
     if (!strcmp(function, "version"))

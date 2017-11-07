@@ -1,29 +1,52 @@
-# Compiled Object files
+# Prerequisites
+*.d
+
+# Object files
 *.o
+*.ko
 *.obj
+*.elf
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Linker output
+*.ilk
+*.map
+*.exp
 
-# Compiled Static libraries
-*.a
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
 *.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
 
 # Executables
 *.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
 
-# DUB
-.dub
-docs.json
-__dummy.html
-docs/
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
 
-# Code coverage
-*.lst
-
-*.tar.gz
-bin/
-Makefile
-defs/
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf
