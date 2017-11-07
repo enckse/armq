@@ -1,6 +1,9 @@
 #include <string.h>
 #include <arpa/inet.h> 
 #include <unistd.h>
+#include <time.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
@@ -11,6 +14,13 @@
 #define INET_ERROR "INET"
 #define CONN_ERROR "CONNECT"
 #define SEND_ERROR "SEND"
+
+// R3 specific data points
+#define R3_EMPTY "\"\""
+#define R3_DELIMIT "\"`\""
+#define R3_TRUE "true"
+#define R3_UNKNOWN "\"unknown\""
+#define R3_REPLAY "\"r3replay\""
 
 /**
  * Send all data
@@ -72,21 +82,64 @@ char* senddata(char* data)
     return SUCCESS;
 }
 
+char* run(const char *function)
+{
+    if (!strcmp(function, "version"))
+    {
+        return VERSION;
+    }
+    else
+    {
+        if (!strcmp(function, "connect"))
+        {
+            senddata("start");
+            return R3_TRUE;
+        }
+        else
+        {
+            if (!strcmp(function, "separator"))
+            {
+                return R3_DELIMIT;
+            }
+            else
+            {
+                if (!strcmp(function, "replay"))
+                {
+                    return R3_REPLAY;
+                }
+                else
+                {
+                    int capture = 0;
+                    if (strcmp(function, "player"))
+                    {
+                        if (strcmp(function, "event"))
+                        {
+                            capture = 1;
+                        }
+                    }
+
+                    if (capture == 0)
+                    {
+                        senddata(strdup(function));
+                        return R3_EMPTY;
+                    }
+                }
+            }
+        }
+    }
+
+    return R3_UNKNOWN;
+}
+
 /**
  * ARMA3 extension
  **/
 void RVExtension(char *output, int outputSize, const char *function)
 {
-    if (!strcmp(function, "version"))
-    {
-        strncpy(output, VERSION, outputSize);
-    }
-    else
-    {
-        char* res = senddata(strdup(function));
-        strncpy(output, res, outputSize);
-    }
-
+    char* res = run(function);
+    char* buffer = (char*)malloc(100 * sizeof(char));
+    snprintf(buffer, 100, "[\"ok\", %s]", res);
+    strncpy(output, res, outputSize);
     output[outputSize-1]='\0';
     return;
 }
