@@ -18,6 +18,7 @@
 
 // R3 specific data points
 #define DELIMITER "`"
+#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S"
 #define R3_EMPTY "\"\""
 #define R3_DELIMIT "\"" DELIMITER "\""
 #define R3_TRUE "true"
@@ -85,15 +86,14 @@ char* senddata(char* data)
     struct tm  ts;
     char       buf[80];
     time(&now);
-    // Format time, "ddd yyyy-mm-dd hh:mm:ss zzz"
     ts = *localtime(&now);
-    strftime(buf, sizeof(buf), "%Y-%m-%d-%H-%M-%S", &ts);
+    strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
         return META_ERROR;
     }
 
-    close(sockfd);
+    close(sockfd); 
     return SUCCESS;
 }
 

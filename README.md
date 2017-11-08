@@ -21,24 +21,7 @@ make VERSION=1.0 PORT=1234
 
 # Receiving
 
-An example receiver in python (using zmq STREAM)
-```
-import zmq
-
-if __name__ == '__main__':
-
-    context = zmq.Context()
-    socket = context.socket(zmq.STREAM)
-    socket.bind("tcp://*:5555")
-
-    while True:
-        clientid, rcv = socket.recv_multipart()
-        print("id: %r" %clientid)
-        print(rcv.decode('utf-8'))
-        socket.send_multipart([clientid, "ack".encode("utf-8")])
-```
-
-simple sockets
+An example using sockets
 ```
 import socket
 
