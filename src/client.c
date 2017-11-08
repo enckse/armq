@@ -34,7 +34,6 @@ int sendall(int s, char *buf, size_t len)
     size_t left = len;
     size_t n;
     int errors = 0;
-    printf("%i %i %i %i\n", total, len, n, errors);
     while(total < len)
     {
         n = send(s, buf+total, left, 0);
