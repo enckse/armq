@@ -14,6 +14,7 @@
 #define INET_ERROR "INET"
 #define CONN_ERROR "CONNECT"
 #define SEND_ERROR "SEND"
+#define META_ERROR "META"
 
 // R3 specific data points
 #define DELIMITER "`"
@@ -78,6 +79,18 @@ char* senddata(char* data)
     if (sendall(sockfd, data, strlen(data)) > 0)
     {
         return SEND_ERROR;
+    }
+
+    time_t     now;
+    struct tm  ts;
+    char       buf[80];
+    time(&now);
+    // Format time, "ddd yyyy-mm-dd hh:mm:ss zzz"
+    ts = *localtime(&now);
+    strftime(buf, sizeof(buf), "%Y-%m-%d-%H-%M-%S", &ts);
+    if (sendall(sockfd, buf, strlen(buf)) > 0)
+    {
+        return META_ERROR;
     }
 
     close(sockfd);
