@@ -32,6 +32,7 @@ int sendall(int s, char *buf, size_t len)
     size_t left = len;
     size_t n;
     int errors = 0;
+    printf("%i %i %i %i\n", total, len, n, errors);
     while(total < len)
     {
         n = send(s, buf+total, left, 0);
@@ -74,7 +75,7 @@ char* senddata(char* data)
        return CONN_ERROR;
     }
 
-    if (sendall(sockfd, data, sizeof("test")) > 0)
+    if (sendall(sockfd, data, strlen(data)) > 0)
     {
         return SEND_ERROR;
     }
