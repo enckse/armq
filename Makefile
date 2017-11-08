@@ -13,5 +13,5 @@ clean:
 
 build:
 	mkdir -p $(BIN)
-	gcc -shared $(FLAGS) -o $(BIN)r3_extension -fPIC $(SRC)client.c
+	gcc -shared $(FLAGS) -o $(BIN)r3_extension.so -fPIC $(SRC)client.c
 	gcc -DDEBUG -DHARNESS $(FLAGS) $(SRC)client.c -o $(BIN)/harness
