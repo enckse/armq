@@ -49,5 +49,11 @@ if __name__ == '__main__':
     serversocket.listen(5)
     while 1:
         (clientsocket, address) = serversocket.accept()
-        print(clientsocket.recv(4095))
+        run = True
+        while run:
+            recvd = clientsocket.recv(1024)
+            if recvd is None or len(recvd) == 0:
+                run = False
+            else:
+                print(recvd)
 ```
