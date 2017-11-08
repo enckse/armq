@@ -16,8 +16,9 @@
 #define SEND_ERROR "SEND"
 
 // R3 specific data points
+#define DELIMITER "`"
 #define R3_EMPTY "\"\""
-#define R3_DELIMIT "\"`\""
+#define R3_DELIMIT "\"" DELIMITER "\""
 #define R3_TRUE "true"
 #define R3_UNKNOWN "\"unknown\""
 #define R3_REPLAY "\"r3replay\""
@@ -82,17 +83,35 @@ char* senddata(char* data)
     return SUCCESS;
 }
 
-char* run(const char *function)
+/**
+ * Run the command
+ **/
+char* run(const char *input)
 {
+    char* function = strdup(input);
+    if (strstr(function, DELIMITER) != NULL)
+    {
+        char* token;
+        while ((token = strsep(&function, DELIMITER)) != NULL)
+        {
+            function = token;
+            break;
+        }
+    }
+
     if (!strcmp(function, "version"))
     {
         return VERSION;
     }
     else
     {
+        char* res = senddata(function);
+#ifdef DEBUG
+        printf("%s\n", res);
+#endif
+
         if (!strcmp(function, "connect"))
         {
-            senddata("start");
             return R3_TRUE;
         }
         else
@@ -120,7 +139,6 @@ char* run(const char *function)
 
                     if (capture == 0)
                     {
-                        senddata(strdup(function));
                         return R3_EMPTY;
                     }
                 }
