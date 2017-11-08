@@ -23,6 +23,7 @@
 #define R3_DELIMIT "\"" DELIMITER "\""
 #define R3_TRUE "true"
 #define R3_UNKNOWN "\"unknown\""
+#define REPLAY "replay"
 
 /**
  * Send all data
@@ -143,7 +144,7 @@ char* run(const char *input)
             }
             else
             {
-                if (!strcmp(function, "replay"))
+                if (!strcmp(function, REPLAY))
                 {
                     int seed = time(NULL);
                     srand(seed);
@@ -187,6 +188,12 @@ void RVExtension(char *output, int outputSize, const char *function)
     snprintf(buffer, 100, "[\"ok\", %s]", res);
     strncpy(output, buffer, outputSize);
     output[outputSize-1]='\0';
+    free(buffer);
+    if (!strcmp(function, REPLAY))
+    {
+        free(res);
+    }
+
     return;
 }
 
@@ -202,5 +209,6 @@ int main(int argc, char *argv[])
     char* buffer = (char*)malloc(100 * sizeof(char));
     RVExtension(buffer, 100, argv[1]);
     printf("%s\n", buffer);
+    free(buffer);
 }
 #endif
