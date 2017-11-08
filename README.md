@@ -43,8 +43,7 @@ simple sockets
 import socket
 
 if __name__ == '__main__':
-    serversocket = socket.socket(
-    socket.AF_INET, socket.SOCK_STREAM)
+    serversocket = socket.socket(ocket.AF_INET, socket.SOCK_STREAM)
     serversocket.bind(("127.0.0.1", 5000))
     serversocket.listen(5)
     while 1:
