@@ -8,15 +8,15 @@ ARMA3 output extensions for message queuing and information passing
 [![Build Status](https://travis-ci.org/enckse/armq.svg?branch=master)](https://travis-ci.org/enckse/armq)
 
 supported targets:
-* linux 32-bit or 64-bit (depending on installed architecture)
+* linux 32-bit (that's all arma3 dedicated server supports on linux today)
 
 ```
 make
 ```
 
-to compile with a different port or specify version
+to compile with a different port
 ```
-make VERSION=1.0 PORT=1234
+make PORT=1234
 ```
 
 # Receiving
