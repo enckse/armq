@@ -1,10 +1,9 @@
 PORT=5000
 IP="127.0.0.1"
-VERSION="__VERSION__"
 BIN=bin/
 SRC=src/
 ARCH=$(shell file /usr/bin/gcc | cut -d ":" -f 2 | cut -d " " -f 3 | cut -d "-" -f 1)
-FLAGS=-DVERSION=$(VERSION) -DPORT=$(PORT) -m$(ARCH)
+FLAGS=-DPORT=$(PORT) -m$(ARCH)
 
 all: clean build
 
