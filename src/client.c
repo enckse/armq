@@ -105,7 +105,7 @@ char* run(const char *input)
     }
     else
     {
-        char* res = senddata(function);
+        char* res = senddata(strdup(input));
 #ifdef DEBUG
         printf("%s\n", res);
 #endif
