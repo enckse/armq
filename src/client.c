@@ -19,10 +19,7 @@
 // R3 specific data points
 #define DELIMITER "`"
 #define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S"
-#define R3_EMPTY "\"\""
-#define R3_DELIMIT "\"" DELIMITER "\""
-#define R3_TRUE "true"
-#define R3_UNKNOWN "\"unknown\""
+#define EMPTY "\"\""
 #define REPLAY "replay"
 
 /**
@@ -131,50 +128,22 @@ char* run(const char *input)
         printf("%s\n", res);
 #endif
 
-        if (!strcmp(function, "connect"))
+        if (!strcmp(function, REPLAY))
         {
-            return R3_TRUE;
+            int seed = time(NULL);
+            srand(seed);
+            char* buf = (char*)malloc(5 * sizeof(char));
+            snprintf(buf,
+                     10,
+                     "\"%c%c%c%c\"",
+                     charid(), charid(), charid(), charid());
+            return buf;
         }
         else
         {
-            if (!strcmp(function, "separator"))
-            {
-                return R3_DELIMIT;
-            }
-            else
-            {
-                if (!strcmp(function, REPLAY))
-                {
-                    int seed = time(NULL);
-                    srand(seed);
-                    char* buf = (char*)malloc(5 * sizeof(char));
-                    snprintf(buf,
-                             10,
-                             "\"%c%c%c%c\"",
-                             charid(), charid(), charid(), charid());
-                    return buf;
-                }
-                else
-                {
-                    int capture = 0;
-                    if (strcmp(function, "player"))
-                    {
-                        if (strcmp(function, "event"))
-                        {
-                            capture = 1;
-                        }
-                    }
-
-                    if (capture == 0)
-                    {
-                        return R3_EMPTY;
-                    }
-                }
-            }
+            return EMPTY;
         }
     }
-
-    return R3_UNKNOWN;
 }
 
 /**
