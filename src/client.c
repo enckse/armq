@@ -148,14 +148,6 @@ char* run(const char *input)
 }
 
 /**
- * Version information
- **/
-void RVExtensionVersion(char *output, int outputSize)
-{
-	strncpy(output, VERSION, outputSize);
-}
-
-/**
  * ARMA3 extension
  **/
 void RVExtension(char *output, int outputSize, const char *function)
