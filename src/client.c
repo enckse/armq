@@ -23,7 +23,6 @@
 #define R3_DELIMIT "\"" DELIMITER "\""
 #define R3_TRUE "true"
 #define R3_UNKNOWN "\"unknown\""
-#define R3_REPLAY "\"r3replay\""
 
 /**
  * Send all data
@@ -98,6 +97,14 @@ char* senddata(char* data)
 }
 
 /**
+ * Character identifier
+ **/
+char charid()
+{
+    return 'a' + (random() % 26);
+}
+
+/**
  * Run the command
  **/
 char* run(const char *input)
@@ -138,7 +145,14 @@ char* run(const char *input)
             {
                 if (!strcmp(function, "replay"))
                 {
-                    return R3_REPLAY;
+                    int seed = time(NULL);
+                    srand(seed);
+                    char* buf = (char*)malloc(5 * sizeof(char));
+                    snprintf(buf,
+                             10,
+                             "\"%c%c%c%c\"",
+                             charid(), charid(), charid(), charid());
+                    return buf;
                 }
                 else
                 {
