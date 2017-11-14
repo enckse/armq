@@ -19,6 +19,14 @@ to compile with a different port
 make PORT=1234
 ```
 
+## Arch
+
+On archlinux, enable the multilib repository:
+
+```
+pacman -S gcc-multilib
+```
+
 # Receiving
 
 An example using sockets
