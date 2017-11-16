@@ -75,6 +75,9 @@ char* senddata(char* data)
        return CONN_ERROR;
     }
 
+#ifdef DEBUG
+        printf("%s\n", data);
+#endif
     if (sendall(sockfd, data, strlen(data)) > 0)
     {
         return SEND_ERROR;
@@ -86,6 +89,9 @@ char* senddata(char* data)
     time(&now);
     ts = *localtime(&now);
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
+#ifdef DEBUG
+        printf("%s\n", buf);
+#endif
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
         return META_ERROR;
