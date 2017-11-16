@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vers.h"
+#include "vars.h"
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
@@ -19,7 +20,7 @@
 
 // R3 specific data points
 #define DELIMITER "`"
-#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S"
+#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER PREFIX
 #define EMPTY "\"\""
 #define REPLAY "replay"
 
@@ -87,7 +88,7 @@ char* senddata(char* data)
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
-        return META_ERROR;
+        return DATE_ERROR;
     }
 
     close(sockfd); 
