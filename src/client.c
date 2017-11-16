@@ -76,7 +76,7 @@ char* senddata(char* data)
     }
 
 #ifdef DEBUG
-        printf("%s\n", data);
+    printf("%s\n", data);
 #endif
     if (sendall(sockfd, data, strlen(data)) > 0)
     {
@@ -90,7 +90,7 @@ char* senddata(char* data)
     ts = *localtime(&now);
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
 #ifdef DEBUG
-        printf("%s\n", buf);
+    printf("%s\n", buf);
 #endif
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
