@@ -88,7 +88,7 @@ char* senddata(char* data)
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
-        return DATE_ERROR;
+        return META_ERROR;
     }
 
     close(sockfd); 
