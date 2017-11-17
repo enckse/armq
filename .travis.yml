@@ -1,4 +1,4 @@
 language: c
 
 script:
-    - make ARCH=64 PREFIX=travis
+    - make ARCH=64

@@ -11,7 +11,7 @@ supported targets:
 * linux 32-bit (that's all arma3 dedicated server supports on linux today)
 
 ```
-make PREFIX=production
+make
 ```
 
 to compile with a different port

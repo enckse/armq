@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "vers.h"
-#include "vars.h"
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
@@ -20,7 +19,7 @@
 
 // R3 specific data points
 #define DELIMITER "`"
-#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER PREFIX
+#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION
 #define EMPTY "\"\""
 #define REPLAY "replay"
 
