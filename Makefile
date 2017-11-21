@@ -1,4 +1,5 @@
 DC_PORT=5000
+SC_PORT=5001
 BIN=bin/
 SRC=src/
 ARCH=32
@@ -15,3 +16,4 @@ clean:
 build:
 	mkdir -p $(BIN)
 	$(call build,,$(DC_PORT),adc)
+	$(call build,-DSIMPLE_COMMAND,$(SC_PORT),sc)
