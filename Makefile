@@ -1,9 +1,11 @@
-PORT=5000
-IP="127.0.0.1"
+DC_PORT=5000
 BIN=bin/
 SRC=src/
 ARCH=32
-FLAGS=-DPORT=$(PORT) -m$(ARCH)
+FLAGS=-DPORT=$(DC_PORT) -m$(ARCH)
+
+build = gcc -shared $1 -m$(ARCH) -DPORT=$2 -o $(BIN)$3_extension.so -fPIC $(SRC)client.c; \
+		gcc -DDEBUG -DHARNESS -DPORT=$2 -o $(BIN)/$3_harness $(SRC)client.c
 
 all: clean build
 
@@ -12,5 +14,4 @@ clean:
 
 build:
 	mkdir -p $(BIN)
-	gcc -shared $(FLAGS) -o $(BIN)adc_extension.so -fPIC $(SRC)client.c
-	gcc -DDEBUG -DHARNESS $(FLAGS) $(SRC)client.c -o $(BIN)/harness
+	$(call build,,$(DC_PORT),adc)

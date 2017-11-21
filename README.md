@@ -16,7 +16,7 @@ make
 
 to compile with a different port
 ```
-make PORT=1234
+make DC_PORT=1234 SC_PORT
 ```
 
 ## Arch
