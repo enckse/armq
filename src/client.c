@@ -4,7 +4,6 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "vers.h"
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
@@ -17,7 +16,14 @@
 #define SEND_ERROR "SEND"
 #define META_ERROR "META"
 
-// R3 specific data points
+#define RAW_VERSION "1.0."
+#ifdef SIMPLE_COMMAND
+#define VERSION RAW_VERSION "0"
+#else
+#define VERSION RAW_VERSION "0"
+#endif
+
+// adc  specific data points
 #define DELIMITER "`"
 #define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION
 #define EMPTY "\"\""
