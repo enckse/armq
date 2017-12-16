@@ -29,10 +29,10 @@ Simple sends all messages received out to a socket which is intended to integrat
 
 ## Arch
 
-On archlinux, enable the multilib repository:
+On archlinux
 
 ```
-pacman -S gcc-multilib
+pacman -S lib32-gcc-libs
 ```
 
 # Receiving
