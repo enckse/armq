@@ -16,12 +16,7 @@
 #define SEND_ERROR "SEND"
 #define META_ERROR "META"
 
-#define RAW_VERSION "1.0."
-#ifdef SIMPLE_COMMAND
-#define VERSION RAW_VERSION "0"
-#else
-#define VERSION RAW_VERSION "0"
-#endif
+#define VERSION "1.0.0"
 
 // adc  specific data points
 #define DELIMITER "`"
@@ -88,7 +83,6 @@ char* senddata(char* data)
         return SEND_ERROR;
     }
 
-#ifndef SIMPLE_COMMAND
     time_t     now;
     struct tm  ts;
     char       buf[80];
@@ -102,7 +96,6 @@ char* senddata(char* data)
     {
         return META_ERROR;
     }
-#endif
 
     close(sockfd); 
     return SUCCESS;
@@ -122,7 +115,6 @@ char charid()
 char* run(const char *input)
 {
     char* function = strdup(input);
-#ifndef SIMPLE_COMMAND
     if (strstr(function, DELIMITER) != NULL)
     {
         char* token;
@@ -132,7 +124,6 @@ char* run(const char *input)
             break;
         }
     }
-#endif
 
     if (!strcmp(function, "version"))
     {
@@ -144,7 +135,6 @@ char* run(const char *input)
 #ifdef DEBUG
         printf("%s\n", res);
 #endif
-#ifndef SIMPLE_COMMAND
         if (!strcmp(function, REPLAY))
         {
             int seed = time(NULL);
@@ -158,11 +148,8 @@ char* run(const char *input)
         }
         else
         {
-#endif
             return EMPTY;
-#ifndef SIMPLE_COMMAND
         }
-#endif
     }
 }
 
@@ -177,12 +164,10 @@ void RVExtension(char *output, int outputSize, const char *function)
     strncpy(output, buffer, outputSize);
     output[outputSize-1]='\0';
     free(buffer);
-#ifndef SIMPLE_COMMAND
     if (!strcmp(function, REPLAY))
     {
         free(res);
     }
-#endif
 
     return;
 }
