@@ -1,4 +1,19 @@
-language: c
+sudo: required
+
+services:
+- docker
+
+arch:
+    packages:
+    - base-devel
+    - lib32-gcc-libs
+    script:
+    - make
 
 script:
-    - make ARCH=64
+- "curl -s https://raw.githubusercontent.com/mikkeloscar/arch-travis/master/arch-travis.sh | bash"
+
+notifications:
+    email:
+        on_success: change
+        on_failure: change
