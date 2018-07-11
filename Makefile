@@ -2,17 +2,17 @@ DC_PORT := 5000
 BIN     := bin/
 SRC     := src/
 ARCH    := 32
-FLAGS   := -DPORT=$(DC_PORT) -m$(ARCH)
+FLAGS   := -DPORT=$(DC_PORT) -m$(ARCH) $(SRC)client.c -o $(BIN)adc_
 GCC     := gcc
-
-build = $(GCC) -shared $1 -m$(ARCH) -DPORT=$2 -o $(BIN)$3_extension.so -fPIC $(SRC)client.c; \
-		$(GCC) $1 -DDEBUG -DHARNESS -DPORT=$2 -o $(BIN)/$3_harness $(SRC)client.c
+SHARED  := $(GCC) -shared  -fPIC $(FLAGS)extension.so
+HARNESS := $(GCC) -DDEBUG -DHARNESS $(FLAGS)harness
 
 all: clean build
 
 clean:
 	rm -rf $(BIN)
+	mkdir -p $(BIN)
 
 build:
-	mkdir -p $(BIN)
-	$(call build,,$(DC_PORT),adc)
+	$(SHARED)
+	$(HARNESS)
