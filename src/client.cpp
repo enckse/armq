@@ -6,19 +6,13 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
+#include "client.h"
 
 using std::string;
 using std::endl;
 using std::cout;
 using std::stringstream;
 using namespace std::chrono;
-
-// IP address (localhost, no network latency)
-#define IP "127.0.0.1"
-#define VERSION "1.1.0"
-
-// adc  specific data points
-#define DELIMITER "`"
 
 /**
  * Send all data
