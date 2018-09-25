@@ -1,9 +1,6 @@
 #include <string.h>
 #include <arpa/inet.h> 
 #include <unistd.h>
-#include <time.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string>
 #include <iostream>
 #include <vector>
@@ -117,7 +114,7 @@ string split(string strToSplit, char delimeter)
     }
     stringstream ss(strToSplit);
     string item;
-    std::vector<std::string> splittedStrings;
+    std::vector<string> splittedStrings;
     while (std::getline(ss, item, delimeter))
     {
        splittedStrings.push_back(item);
