@@ -4,24 +4,17 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string>
+
+using std::string;
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
-
-// Return strings from sending
-#define SUCCESS "SUCCESS"
-#define SOCKET_ERROR "SOCKET"
-#define INET_ERROR "INET"
-#define CONN_ERROR "CONNECT"
-#define SEND_ERROR "SEND"
-#define META_ERROR "META"
-
 #define VERSION "1.0.0"
 
 // adc  specific data points
 #define DELIMITER "`"
 #define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION
-#define EMPTY "\"\""
 #define REPLAY "replay"
 
 /**
@@ -52,14 +45,14 @@ int sendall(int s, char *buf, size_t len)
 /**
  * Send data
  **/
-char* senddata(char* data)
+string senddata(char* data)
 {
     int sockfd = 0;
     int n = 0;
     struct sockaddr_in serv_addr; 
     if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-        return SOCKET_ERROR;
+        return "sockerr";
     } 
 
     memset(&serv_addr, '0', sizeof(serv_addr)); 
@@ -67,12 +60,12 @@ char* senddata(char* data)
     serv_addr.sin_port = htons(PORT); 
     if(inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
     {
-        return INET_ERROR;
+        return "ineterr";
     } 
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-       return CONN_ERROR;
+       return "connerr";
     }
 
 #ifdef DEBUG
@@ -80,7 +73,7 @@ char* senddata(char* data)
 #endif
     if (sendall(sockfd, data, strlen(data)) > 0)
     {
-        return SEND_ERROR;
+        return "senderr";
     }
 
     time_t     now;
@@ -94,11 +87,11 @@ char* senddata(char* data)
 #endif
     if (sendall(sockfd, buf, strlen(buf)) > 0)
     {
-        return META_ERROR;
+        return "metaerr";
     }
 
     close(sockfd); 
-    return SUCCESS;
+    return "success";
 }
 
 /**
@@ -112,7 +105,7 @@ char charid()
 /**
  * Run the command
  **/
-char* run(const char *input)
+string run(const char *input)
 {
     char* function = strdup(input);
     if (strstr(function, DELIMITER) != NULL)
@@ -131,7 +124,7 @@ char* run(const char *input)
     }
     else
     {
-        char* res = senddata(strdup(input));
+        string res = senddata(strdup(input));
 #ifdef DEBUG
         printf("%s\n", res);
 #endif
@@ -148,9 +141,19 @@ char* run(const char *input)
         }
         else
         {
-            return EMPTY;
+            return "\"\"";
         }
     }
+}
+
+void RVExtensionVersion(char *output, int outputSize)
+{
+	strncpy(output, VERSION, outputSize - 1);
+}
+
+int RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc)
+{
+    return 0;
 }
 
 /**
@@ -158,17 +161,12 @@ char* run(const char *input)
  **/
 void RVExtension(char *output, int outputSize, const char *function)
 {
-    char* res = run(function);
+    string res = run(function);
     char* buffer = (char*)malloc(100 * sizeof(char));
     snprintf(buffer, 100, "[\"ok\", %s]", res);
     strncpy(output, buffer, outputSize);
     output[outputSize-1]='\0';
     free(buffer);
-    if (!strcmp(function, REPLAY))
-    {
-        free(res);
-    }
-
     return;
 }
 
