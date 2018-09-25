@@ -60,17 +60,18 @@ string senddata(string data)
     {
         return "sockerr";
     } 
-
     memset(&serv_addr, '0', sizeof(serv_addr)); 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT); 
     if(inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
     {
+        close(sockfd);
         return "ineterr";
     } 
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
+        close(sockfd);
         return "connerr";
     }
 
