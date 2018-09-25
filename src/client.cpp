@@ -5,11 +5,13 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <chrono>
 
 using std::string;
 using std::endl;
 using std::cout;
 using std::stringstream;
+using namespace std::chrono;
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
@@ -17,7 +19,6 @@ using std::stringstream;
 
 // adc  specific data points
 #define DELIMITER "`"
-#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION DELIMITER
 
 /**
  * Send all data
@@ -43,6 +44,10 @@ int sendall(int s, const char *buf, size_t len)
 
     return errors;
 } 
+
+string gettime() {
+    return std::to_string(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
+}
 
 /**
  * Send data
@@ -76,15 +81,7 @@ string senddata(string data)
 #ifdef DEBUG
     cout << data << endl;
 #endif
-    string sending;
-    sending = data;
-    time_t     now;
-    struct tm  ts;
-    char       buf[80];
-    time(&now);
-    ts = *localtime(&now);
-    strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
-    sending = string(buf) + sending;
+    string sending = gettime() + DELIMITER + VERSION + DELIMITER + data;
     const char* d = sending.c_str();
 #ifdef DEBUG
     cout << sending << endl;
