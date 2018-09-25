@@ -5,22 +5,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <iostream>
+#include <vector>
+#include <sstream>
 
 using std::string;
+using std::endl;
+using std::cout;
+using std::stringstream;
 
 // IP address (localhost, no network latency)
 #define IP "127.0.0.1"
-#define VERSION "1.0.0"
+#define VERSION "1.1.0"
 
 // adc  specific data points
 #define DELIMITER "`"
 #define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION
-#define REPLAY "replay"
 
 /**
  * Send all data
  **/
-int sendall(int s, char *buf, size_t len)
+int sendall(int s, const char *buf, size_t len)
 {
     size_t total = 0;
     size_t left = len;
@@ -45,8 +50,11 @@ int sendall(int s, char *buf, size_t len)
 /**
  * Send data
  **/
-string senddata(char* data)
+string senddata(string data)
 {
+    if (data.length() == 0) {
+        return "nullerr";
+    }
     int sockfd = 0;
     int n = 0;
     struct sockaddr_in serv_addr; 
@@ -65,33 +73,33 @@ string senddata(char* data)
 
     if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-       return "connerr";
+        return "connerr";
     }
 
 #ifdef DEBUG
-    printf("%s\n", data);
+    cout << data << endl;
 #endif
-    if (sendall(sockfd, data, strlen(data)) > 0)
-    {
-        return "senderr";
-    }
-
+    string sending;
+    sending = data;
     time_t     now;
     struct tm  ts;
     char       buf[80];
     time(&now);
     ts = *localtime(&now);
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
+    sending = string(buf) + DELIMITER + sending;
+    const char* d = sending.c_str();
 #ifdef DEBUG
-    printf("%s\n", buf);
+    cout << sending << endl;
 #endif
-    if (sendall(sockfd, buf, strlen(buf)) > 0)
+    string result = "success";
+    if (sendall(sockfd, d, strlen(d)) > 0)
     {
-        return "metaerr";
+        result = "senderr";
     }
 
     close(sockfd); 
-    return "success";
+    return result;
 }
 
 /**
@@ -102,23 +110,29 @@ char charid()
     return 'a' + (random() % 26);
 }
 
+string split(string strToSplit, char delimeter)
+{
+    if (strToSplit.length() == 0) {
+        return "";
+    }
+    stringstream ss(strToSplit);
+    string item;
+    std::vector<std::string> splittedStrings;
+    while (std::getline(ss, item, delimeter))
+    {
+       splittedStrings.push_back(item);
+    }
+    return splittedStrings[0];
+}
+
 /**
  * Run the command
  **/
 string run(const char *input)
 {
-    char* function = strdup(input);
-    if (strstr(function, DELIMITER) != NULL)
-    {
-        char* token;
-        while ((token = strsep(&function, DELIMITER)) != NULL)
-        {
-            function = token;
-            break;
-        }
-    }
-
-    if (!strcmp(function, "version"))
+    string function = string(input);
+    function = split(function, DELIMITER[0]);
+    if (function == "version")
     {
         return VERSION;
     }
@@ -126,18 +140,18 @@ string run(const char *input)
     {
         string res = senddata(strdup(input));
 #ifdef DEBUG
-        printf("%s\n", res);
+        cout << res << endl;
 #endif
-        if (!strcmp(function, REPLAY))
+        if (function == "replay")
         {
             int seed = time(NULL);
             srand(seed);
-            char* buf = (char*)malloc(5 * sizeof(char));
-            snprintf(buf,
-                     10,
-                     "\"%c%c%c%c\"",
-                     charid(), charid(), charid(), charid());
-            return buf;
+            char a[4];
+            a[0] = charid();
+            a[1] = charid();
+            a[2] = charid();
+            a[3] = charid();
+            return "\"" + string(a) + "\"";
         }
         else
         {
@@ -163,7 +177,7 @@ void RVExtension(char *output, int outputSize, const char *function)
 {
     string res = run(function);
     char* buffer = (char*)malloc(100 * sizeof(char));
-    snprintf(buffer, 100, "[\"ok\", %s]", res);
+    snprintf(buffer, 100, "[\"ok\", %s]", res.c_str());
     strncpy(output, buffer, outputSize);
     output[outputSize-1]='\0';
     free(buffer);
