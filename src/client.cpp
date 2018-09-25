@@ -153,14 +153,8 @@ string run(const char *input)
     }
 }
 
-void RVExtensionVersion(char *output, int outputSize)
-{
-	strncpy(output, VERSION, outputSize - 1);
-}
-
-int RVExtensionArgs(char *output, int outputSize, const char *function, const char **argv, int argc)
-{
-    return 0;
+extern "C" {
+    void RVExtension(char *output, int outputSize, const char *function);
 }
 
 /**
