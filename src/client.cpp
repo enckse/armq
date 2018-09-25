@@ -20,7 +20,7 @@ using std::stringstream;
 
 // adc  specific data points
 #define DELIMITER "`"
-#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION
+#define TIME_FORMAT DELIMITER "%Y-%m-%d-%H-%M-%S" DELIMITER VERSION DELIMITER
 
 /**
  * Send all data
@@ -87,7 +87,7 @@ string senddata(string data)
     time(&now);
     ts = *localtime(&now);
     strftime(buf, sizeof(buf), TIME_FORMAT, &ts);
-    sending = string(buf) + DELIMITER + sending;
+    sending = string(buf) + sending;
     const char* d = sending.c_str();
 #ifdef DEBUG
     cout << sending << endl;
@@ -130,15 +130,18 @@ string split(string strToSplit, char delimeter)
  **/
 string run(const char *input)
 {
-    string function = string(input);
-    function = split(function, DELIMITER[0]);
+    string raw = string(input);
+    string function = split(raw, DELIMITER[0]);
+#ifdef DEBUG
+    cout << function << endl;
+#endif
     if (function == "version")
     {
         return VERSION;
     }
     else
     {
-        string res = senddata(strdup(input));
+        string res = senddata(raw);
 #ifdef DEBUG
         cout << res << endl;
 #endif
