@@ -16,7 +16,7 @@ make
 
 to compile with a different port
 ```
-make DC_PORT=1234 SC_PORT
+make DC_PORT=1234
 ```
 
 ## adc
