@@ -8,6 +8,8 @@
 #include <chrono>
 #include "client.h"
 
+#define IP "127.0.0.1"
+
 using std::string;
 using std::endl;
 using std::cout;
