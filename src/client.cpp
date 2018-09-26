@@ -6,6 +6,8 @@
 #include <vector>
 #include <sstream>
 #include <chrono>
+#include <fstream>
+#include <unordered_map>
 #include "client.h"
 
 #define IP "127.0.0.1"
@@ -14,6 +16,8 @@ using std::string;
 using std::endl;
 using std::cout;
 using std::stringstream;
+using std::ofstream;
+using std::hash;
 using namespace std::chrono;
 
 /**
@@ -45,14 +49,53 @@ string gettime() {
     return std::to_string(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
 }
 
-/**
- * Send data
- **/
+string sendviammap(string timestamp, string data) {
+#ifdef DEBUG
+    cout << "send via mmap" << endl;
+#endif
+    hash<string> hasher;
+    size_t hash = hasher(data);
+    string filename = "/dev/shm/armq/" + timestamp + "." + std::to_string(hash) + ".msg";
+#ifdef DEBUG
+    cout << filename << endl;
+#endif
+    ofstream out(filename);
+    if (!out.is_open()) {
+        return "fileerr";
+    }
+    out << data;
+    out.close();
+    return "success";
+}
+
 string senddata(string data)
 {
     if (data.length() == 0) {
         return "nullerr";
     }
+#ifdef DEBUG
+    cout << data << endl;
+#endif
+    string time = gettime();
+    string sending = time + DELIMITER + VERSION + DELIMITER + data;
+#ifdef DEBUG
+    cout << sending << endl;
+#endif
+
+#ifdef SOCKET
+    return sendviasocket(sending.c_str());
+#else
+    return sendviammap(time, sending);
+#endif
+}
+
+/**
+ * Send data
+ **/
+string sendviasocket(const char* d) {
+#ifdef DEBUG
+    cout << "send via socket" << endl;
+#endif
     int sockfd = 0;
     int n = 0;
     struct sockaddr_in serv_addr; 
@@ -75,21 +118,13 @@ string senddata(string data)
         return "connerr";
     }
 
-#ifdef DEBUG
-    cout << data << endl;
-#endif
-    string sending = gettime() + DELIMITER + VERSION + DELIMITER + data;
-    const char* d = sending.c_str();
-#ifdef DEBUG
-    cout << sending << endl;
-#endif
     string result = "success";
     if (sendall(sockfd, d, strlen(d)) > 0)
     {
         result = "senderr";
     }
 
-    close(sockfd); 
+    close(sockfd);
     return result;
 }
 
