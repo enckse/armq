@@ -27,10 +27,9 @@ using std::hash;
 using namespace std::chrono;
 
 /**
- * Send all data
+ * Send all data over a socket
  **/
-int sendall(int s, const char *buf, size_t len)
-{
+int sendSocket(int s, const char *buf, size_t len) {
     size_t total = 0;
     size_t left = len;
     size_t n;
@@ -51,12 +50,18 @@ int sendall(int s, const char *buf, size_t len)
     return errors;
 } 
 
-string gettime() {
+/**
+ * Get the time, in milliseconds, since the epoch
+ **/
+string getTime() {
     return std::to_string(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
 }
 
-string sendviammap(string timestamp, string data) {
-    debug("send via mmap");
+/**
+ * Send via dev shm (memory/tmpfs)
+ **/
+string useDevShm(string timestamp, string data) {
+    debug("send via /dev/shm");
     hash<string> hasher;
     size_t hash = hasher(data);
     string filename = "/dev/shm/armq/" + timestamp + "." + std::to_string(hash) + ".msg";
@@ -70,27 +75,29 @@ string sendviammap(string timestamp, string data) {
     return "success";
 }
 
-string senddata(string data)
-{
+/**
+ * Sends data out via the built method (not configured at runtime)
+ **/
+string sendData(string data) {
     if (data.length() == 0) {
         return "nullerr";
     }
     debug(data);
-    string time = gettime();
+    string time = getTime();
     string sending = time + DELIMITER + VERSION + DELIMITER + data;
     debug(sending);
 
 #ifdef SOCKET
-    return sendviasocket(sending.c_str());
+    return useSocket(sending.c_str());
 #else
-    return sendviammap(time, sending);
+    return useDevShm(time, sending);
 #endif
 }
 
 /**
- * Send data
+ * Send data via sockets
  **/
-string sendviasocket(const char* d) {
+string useSocket(const char* d) {
     debug("send via socket");
     int sockfd = 0;
     int n = 0;
@@ -115,7 +122,7 @@ string sendviasocket(const char* d) {
     }
 
     string result = "success";
-    if (sendall(sockfd, d, strlen(d)) > 0)
+    if (sendSocket(sockfd, d, strlen(d)) > 0)
     {
         result = "senderr";
     }
@@ -127,13 +134,14 @@ string sendviasocket(const char* d) {
 /**
  * Character identifier
  **/
-char charid()
-{
+char charId() {
     return 'a' + (random() % 26);
 }
 
-string split(string strToSplit, char delimeter)
-{
+/**
+ * Split a string and get the first element
+ **/
+string splitFirst(string strToSplit, char delimeter) {
     if (strToSplit.length() == 0) {
         return "";
     }
@@ -150,10 +158,9 @@ string split(string strToSplit, char delimeter)
 /**
  * Run the command
  **/
-string run(const char *input)
-{
+string run(const char *input) {
     string raw = string(input);
-    string function = split(raw, DELIMITER[0]);
+    string function = splitFirst(raw, DELIMITER[0]);
     debug(function);
     if (function == "version")
     {
@@ -161,17 +168,16 @@ string run(const char *input)
     }
     else
     {
-        string res = senddata(raw);
+        string res = sendData(raw);
         debug(res);
         if (function == "replay")
         {
             int seed = time(NULL);
             srand(seed);
             char a[4];
-            a[0] = charid();
-            a[1] = charid();
-            a[2] = charid();
-            a[3] = charid();
+            for (int i = 0; i < 4; i++) {
+                a[i] = charId();
+            }
             return "\"" + string(a) + "\"";
         }
         else
@@ -188,8 +194,7 @@ extern "C" {
 /**
  * ARMA3 extension
  **/
-void RVExtension(char *output, int outputSize, const char *function)
-{
+void RVExtension(char *output, int outputSize, const char *function) {
     string res = run(function);
     char* buffer = (char*)malloc(100 * sizeof(char));
     snprintf(buffer, 100, "[\"ok\", %s]", res.c_str());
@@ -200,8 +205,7 @@ void RVExtension(char *output, int outputSize, const char *function)
 }
 
 #ifdef HARNESS
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]) {
     if (argc < 2)
     {
         printf("argument required\n");
