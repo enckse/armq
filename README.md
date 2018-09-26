@@ -15,7 +15,7 @@ to compile using `/dev/shm/armq/` for output
 make
 ```
 
-to compile with a different port using sockets
+to compile with a different port using sockets (default port is 5000)
 ```
 make SOCKETS=1 PORT=1234
 ```

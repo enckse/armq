@@ -76,25 +76,6 @@ string useDevShm(string timestamp, string data) {
 }
 
 /**
- * Sends data out via the built method (not configured at runtime)
- **/
-string sendData(string data) {
-    if (data.length() == 0) {
-        return "nullerr";
-    }
-    debug(data);
-    string time = getTime();
-    string sending = time + DELIMITER + VERSION + DELIMITER + data;
-    debug(sending);
-
-#ifdef SOCKET
-    return useSocket(sending.c_str());
-#else
-    return useDevShm(time, sending);
-#endif
-}
-
-/**
  * Send data via sockets
  **/
 string useSocket(const char* d) {
@@ -130,6 +111,26 @@ string useSocket(const char* d) {
     close(sockfd);
     return result;
 }
+
+/**
+ * Sends data out via the built method (not configured at runtime)
+ **/
+string sendData(string data) {
+    if (data.length() == 0) {
+        return "nullerr";
+    }
+    debug(data);
+    string time = getTime();
+    string sending = time + DELIMITER + VERSION + DELIMITER + data;
+    debug(sending);
+
+#ifdef SOCKET
+    return useSocket(sending.c_str());
+#else
+    return useDevShm(time, sending);
+#endif
+}
+
 
 /**
  * Character identifier

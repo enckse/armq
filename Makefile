@@ -1,7 +1,10 @@
-DC_PORT := 5000
+PORT    := 5000
 BIN     := bin/
 ARCH    := 32
-FLAGS   := -DPORT=$(DC_PORT) -m$(ARCH) src/client.cpp -o $(BIN)adc_
+FLAGS   := -DPORT=$(PORT) -m$(ARCH) src/client.cpp -o $(BIN)adc_
+ifeq ($(SOCKETS),1)
+	FLAGS := -DSOCKET=1 $(FLAGS)
+endif
 GCC     := g++
 SHARED  := $(GCC) -shared -fPIC $(FLAGS)extension.so
 HARNESS := $(GCC) -DDEBUG -DHARNESS $(FLAGS)harness
