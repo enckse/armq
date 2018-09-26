@@ -10,13 +10,14 @@ ARMA3 output extensions for message queuing and information passing
 supported targets:
 * linux 32-bit (that's all arma3 dedicated server supports on linux today)
 
+to compile using `/dev/shm/armq/` for output
 ```
 make
 ```
 
-to compile with a different port
+to compile with a different port using sockets
 ```
-make DC_PORT=1234
+make SOCKETS=1 PORT=1234
 ```
 
 ## adc
