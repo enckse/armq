@@ -10,6 +10,12 @@
 #include <unordered_map>
 #include "client.h"
 
+#ifdef DEBUG
+# define debug(x) cout << x << endl;
+#else
+# define debug(x)
+#endif
+
 #define IP "127.0.0.1"
 
 using std::string;
@@ -47,12 +53,6 @@ int sendall(int s, const char *buf, size_t len)
 
 string gettime() {
     return std::to_string(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
-}
-
-void debug(string message) {
-#ifdef DEBUG
-    cout << message << endl;
-#endif
 }
 
 string sendviammap(string timestamp, string data) {
