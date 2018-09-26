@@ -49,16 +49,18 @@ string gettime() {
     return std::to_string(std::chrono::system_clock::now().time_since_epoch() / std::chrono::milliseconds(1));
 }
 
-string sendviammap(string timestamp, string data) {
+void debug(string message) {
 #ifdef DEBUG
-    cout << "send via mmap" << endl;
+    cout << message << endl;
 #endif
+}
+
+string sendviammap(string timestamp, string data) {
+    debug("send via mmap");
     hash<string> hasher;
     size_t hash = hasher(data);
     string filename = "/dev/shm/armq/" + timestamp + "." + std::to_string(hash) + ".msg";
-#ifdef DEBUG
-    cout << filename << endl;
-#endif
+    debug(filename);
     ofstream out(filename);
     if (!out.is_open()) {
         return "fileerr";
@@ -73,14 +75,10 @@ string senddata(string data)
     if (data.length() == 0) {
         return "nullerr";
     }
-#ifdef DEBUG
-    cout << data << endl;
-#endif
+    debug(data);
     string time = gettime();
     string sending = time + DELIMITER + VERSION + DELIMITER + data;
-#ifdef DEBUG
-    cout << sending << endl;
-#endif
+    debug(sending);
 
 #ifdef SOCKET
     return sendviasocket(sending.c_str());
@@ -93,9 +91,7 @@ string senddata(string data)
  * Send data
  **/
 string sendviasocket(const char* d) {
-#ifdef DEBUG
-    cout << "send via socket" << endl;
-#endif
+    debug("send via socket");
     int sockfd = 0;
     int n = 0;
     struct sockaddr_in serv_addr; 
@@ -158,9 +154,7 @@ string run(const char *input)
 {
     string raw = string(input);
     string function = split(raw, DELIMITER[0]);
-#ifdef DEBUG
-    cout << function << endl;
-#endif
+    debug(function);
     if (function == "version")
     {
         return VERSION;
@@ -168,9 +162,7 @@ string run(const char *input)
     else
     {
         string res = senddata(raw);
-#ifdef DEBUG
-        cout << res << endl;
-#endif
+        debug(res);
         if (function == "replay")
         {
             int seed = time(NULL);
