@@ -1,7 +1,8 @@
 PORT    := 5000
+WPATH   := "\"/dev/shm/armq/\""
 BIN     := bin/
 ARCH    := 32
-FLAGS   := -DPORT=$(PORT) -m$(ARCH) src/client.cpp -o $(BIN)adc_
+FLAGS   := -DPORT=$(PORT) -DFILEPATH=$(WPATH) -m$(ARCH) src/client.cpp -o $(BIN)adc_
 ifeq ($(SOCKETS),1)
 	FLAGS := -DSOCKET=1 $(FLAGS)
 endif

@@ -15,6 +15,11 @@ to compile using `/dev/shm/armq/` for output
 make
 ```
 
+to a different folder
+```
+make WPATH="\\\"/var/cache/armq/\\\""
+```
+
 to compile with a different port using sockets (default port is 5000)
 ```
 make SOCKETS=1 PORT=1234

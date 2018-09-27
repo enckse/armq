@@ -66,7 +66,7 @@ string useDevShm(string timestamp, string data) {
     debug("send via /dev/shm");
     hash<string> hasher;
     size_t hash = hasher(data);
-    string filename = "/dev/shm/armq/" + timestamp + "." + std::to_string(hash) + ".msg";
+    string filename = FILEPATH + timestamp + "." + std::to_string(hash) + ".msg";
     debug(filename);
     ofstream out(filename);
     if (!out.is_open()) {
