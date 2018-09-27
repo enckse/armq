@@ -8,13 +8,15 @@
 #include <chrono>
 #include <fstream>
 #include <unordered_map>
-#include "client.h"
 
 #ifdef DEBUG
 # define debug(x) cout << x << endl;
 #else
 # define debug(x)
 #endif
+
+#define VERSION "1.1.0"
+#define DELIMITER "`"
 
 #define IP "127.0.0.1"
 
