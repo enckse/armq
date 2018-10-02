@@ -1,5 +1,5 @@
 PORT    := 5000
-WPATH   := "\"/dev/shm/armq/\""
+WPATH   := "\"/opt/armq/\""
 BIN     := bin/
 ARCH    := 32
 FLAGS   := -DPORT=$(PORT) -DFILEPATH=$(WPATH) -m$(ARCH) src/client.cpp -o $(BIN)adc_

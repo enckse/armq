@@ -62,8 +62,8 @@ string getTime() {
 /**
  * Send via dev shm (memory/tmpfs)
  **/
-string useDevShm(string timestamp, string data) {
-    debug("send via /dev/shm");
+string useSharedMemory(string timestamp, string data) {
+    debug("send via tmpfs");
     hash<string> hasher;
     size_t hash = hasher(data);
     string filename = FILEPATH + timestamp + "." + std::to_string(hash) + ".msg";
@@ -129,7 +129,7 @@ string sendData(string data) {
 #ifdef SOCKET
     return useSocket(sending.c_str());
 #else
-    return useDevShm(time, sending);
+    return useSharedMemory(time, sending);
 #endif
 }
 
