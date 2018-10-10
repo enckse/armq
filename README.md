@@ -5,8 +5,6 @@ ARMA3 output extensions for message queuing and information passing
 
 # build
 
-![Build Status](https://git.epiphyte.network/cgit/armq.png)
-
 supported targets:
 * linux 32-bit (that's all arma3 dedicated server supports on linux today)
 
