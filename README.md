@@ -26,11 +26,3 @@ make SOCKETS=1 PORT=1234
 ## adc
 
 Is intended to pass event/game data out for visualization/post-hoc analysis
-
-## Arch
-
-On archlinux
-
-```
-pacman -S lib32-gcc-libs
-```
