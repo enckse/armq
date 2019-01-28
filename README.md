@@ -13,6 +13,11 @@ to compile using `/opt/armq/` for output
 make
 ```
 
+requires the following packages on debian to build:
+* libc6-dev-i386
+* gcc-multilib
+* g++-multilib 
+
 to a different folder
 ```
 make WPATH="\\\"/var/cache/armq/\\\""
