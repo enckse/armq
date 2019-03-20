@@ -29,30 +29,6 @@ using std::hash;
 using namespace std::chrono;
 
 /**
- * Send all data over a socket
- **/
-int sendSocket(int s, const char *buf, size_t len) {
-    size_t total = 0;
-    size_t left = len;
-    size_t n;
-    int errors = 0;
-    while(total < len)
-    {
-        n = send(s, buf+total, left, 0);
-        if (n < 0)
-        {
-            errors++;
-            break;
-        }
-
-        total += n;
-        left -= n;
-    }
-
-    return errors;
-} 
-
-/**
  * Get the time, in milliseconds, since the epoch
  **/
 string getTime() {
@@ -78,43 +54,6 @@ string useSharedMemory(string timestamp, string data) {
 }
 
 /**
- * Send data via sockets
- **/
-string useSocket(const char* d) {
-    debug("send via socket");
-    int sockfd = 0;
-    int n = 0;
-    struct sockaddr_in serv_addr; 
-    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-    {
-        return "sockerr";
-    } 
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT); 
-    if(inet_pton(AF_INET, IP, &serv_addr.sin_addr) <= 0)
-    {
-        close(sockfd);
-        return "ineterr";
-    } 
-
-    if( connect(sockfd, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
-    {
-        close(sockfd);
-        return "connerr";
-    }
-
-    string result = "success";
-    if (sendSocket(sockfd, d, strlen(d)) > 0)
-    {
-        result = "senderr";
-    }
-
-    close(sockfd);
-    return result;
-}
-
-/**
  * Sends data out via the built method (not configured at runtime)
  **/
 string sendData(string data) {
@@ -126,11 +65,7 @@ string sendData(string data) {
     string sending = time + DELIMITER + VERSION + DELIMITER + data;
     debug(sending);
 
-#ifdef SOCKET
-    return useSocket(sending.c_str());
-#else
     return useSharedMemory(time, sending);
-#endif
 }
 
 
