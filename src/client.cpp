@@ -1,4 +1,3 @@
-#include <arpa/inet.h> 
 #include <chrono>
 #include <fstream>
 #include <iostream>
@@ -86,8 +85,7 @@ string splitFirst(string strToSplit, char delimeter) {
     stringstream ss(strToSplit);
     string item;
     std::vector<string> splittedStrings;
-    while (std::getline(ss, item, delimeter))
-    {
+    while (std::getline(ss, item, delimeter)) {
        splittedStrings.push_back(item);
     }
     return splittedStrings[0];
@@ -100,16 +98,12 @@ string run(const char *input) {
     string raw = string(input);
     string function = splitFirst(raw, DELIMITER[0]);
     debug(function);
-    if (function == "version")
-    {
+    if (function == "version") {
         return VERSION;
-    }
-    else
-    {
+    } else {
         string res = sendData(raw);
         debug(res);
-        if (function == "replay")
-        {
+        if (function == "replay") {
             int seed = time(NULL);
             srand(seed);
             char a[4];
@@ -117,9 +111,7 @@ string run(const char *input) {
                 a[i] = charId();
             }
             return "\"" + string(a) + "\"";
-        }
-        else
-        {
+        } else {
             return "\"\"";
         }
     }
@@ -144,8 +136,7 @@ void RVExtension(char *output, int outputSize, const char *function) {
 
 #ifdef HARNESS
 int main(int argc, char *argv[]) {
-    if (argc < 2)
-    {
+    if (argc < 2) {
         printf("argument required\n");
         return 1;
     }
