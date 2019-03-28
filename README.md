@@ -14,6 +14,8 @@ to compile using `/opt/armq/` for output
 make
 ```
 
+**RECOMMENDATION:** wherever armq is running the `/opt/armq` or alternative path should be a memory-backed store (e.g. tmpfs)
+
 requires the following packages on debian to build:
 
 * libc6-dev-i386
